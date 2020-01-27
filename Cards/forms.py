@@ -9,3 +9,16 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ('course', 'question', 'answer')
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
+
+        labels = {
+            'text': _('Add your comment: '),
+        }
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 2, 'cols': 15}),
+        }

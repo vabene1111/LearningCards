@@ -33,6 +33,10 @@ SESSION_COOKIE_AGE = 365 * 60 * 24 * 60
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 DJANGO_TABLES2_TEMPLATE = 'Cards/templates/generic/table_template.html'
 
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
+
 # Application definition
 
 INSTALLED_APPS = [

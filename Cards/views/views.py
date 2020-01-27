@@ -1,10 +1,13 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, F, Value, IntegerField
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from datetime import datetime, timedelta
-
+from django.utils.translation import gettext as _
 from django.urls import reverse
 
+from Cards.forms import CommentForm
 from Cards.models import *
 
 
@@ -58,7 +61,10 @@ def choose_question(request, course):
 
 def quiz(request, pk):
     course = Course.objects.get(pk=pk)
-    return render(request, 'quiz.html', {'question': choose_question(request, pk), 'course': course})
+    question = choose_question(request, pk)
+    comments = Comment.objects.filter(question=question).all()
+
+    return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments})
 
 
 def log_question(user, question, type):
@@ -80,5 +86,23 @@ def quiz_fail(request, pk):
     question = Question.objects.get(pk=pk)
     if request.user.is_authenticated:
         log_question(request.user, question, QuestionLog.FAIL)
+
+    return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
+
+
+@login_required
+def quiz_comment(request, pk):
+    question = Question.objects.get(pk=pk)
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = Comment()
+            comment.question = question
+            comment.text = comment_form.cleaned_data['text']
+            comment.created_by = request.user
+
+            comment.save()
+        else:
+            messages.add_message(request, messages.ERROR, _('There was an error saving your comment!') + str(comment_form.errors))
 
     return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))

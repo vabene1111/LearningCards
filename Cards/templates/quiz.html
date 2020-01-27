@@ -21,4 +21,28 @@
     <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success">{% trans 'Success' %}</a> <br/>
     <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger">{% trans 'Failed' %}</a>
 
+    <h5>{% trans 'Comments' %}</h5>
+
+    <form method="POST" class="post-form" action="{% url 'quiz_comment' question.pk %}">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <textarea name="text" cols="15" rows="2" class="textarea form-control" required
+                      id="id_text"></textarea>
+            <div class="input-group-append">
+                <input type="submit" value="{% trans 'Comment' %}" class="btn btn-success">
+            </div>
+        </div>
+    </form>
+
+    {% for c in comments %}
+        <div class="card">
+            <div class="card-body">
+                <small class="card-title">{{ c.updated_at }} {% trans 'by' %} {{ c.created_by.username }}</small> <a
+                    href="{% url 'edit_comment' c.pk %}" class="d-print-none"><i class="fas fa-pencil-alt"></i></a><br/>
+                {{ c.text }}
+            </div>
+        </div>
+        <br/>
+    {% endfor %}
+
 {% endblock %}
