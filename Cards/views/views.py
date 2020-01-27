@@ -1,8 +1,8 @@
-from django.db.models import Count
+from django.db.models import Count, F, Value, IntegerField
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from datetime import datetime, timedelta
 
-# Create your views here.
 from django.urls import reverse
 
 from Cards.models import *
@@ -14,10 +14,51 @@ def index(request):
     return render(request, 'index.html', {'courses': courses})
 
 
-def quiz(request, pk):
-    question = Question.objects.filter(course=pk).first()
+def choose_question(request, course):
+    questions = Question.objects.filter(course=course).annotate(weight=Value(0, output_field=IntegerField())).order_by("-weight").all()
 
-    return render(request, 'quiz.html', {'question': question})
+    if len(questions) == 0:
+        return None
+
+    if request.user.is_authenticated:
+        for q in questions:
+
+            last_log = QuestionLog.objects.filter(user=request.user, question=q).all().last()
+            if last_log:
+                recent = timezone.now() - last_log.created_at
+
+                if recent.seconds < 900:
+                    q.weight = q.weight - (9 - recent.seconds / 100)
+
+            daily = datetime.now() - timedelta(hours=24)
+            log_daily = QuestionLog.objects.filter(user=request.user, question=q, created_at__lt=daily).all()
+            for ld in log_daily:
+                if ld.type == QuestionLog.FAIL:
+                    q.weight = q.weight + 2
+                else:
+                    q.weight = q.weight - 2
+
+            total = datetime.now() - timedelta(hours=24)
+            log_total = QuestionLog.objects.filter(user=request.user, question=q, created_at__lt=total).all()
+            for lt in log_total:
+                if lt.type == QuestionLog.FAIL:
+                    q.weight = q.weight + 0.5
+                else:
+                    q.weight = q.weight - 0.5
+
+        question = questions[0]
+        for q in questions:
+            if q.weight > question.weight:
+                question = q
+
+        return question
+    else:
+        return questions.order_by("?").first()
+
+
+def quiz(request, pk):
+    course = Course.objects.get(pk=pk)
+    return render(request, 'quiz.html', {'question': choose_question(request, pk), 'course': course})
 
 
 def log_question(user, question, type):
