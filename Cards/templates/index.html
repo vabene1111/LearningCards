@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Learning Cards{% endblock %}
+
+{% block content %}
+
+    <h2>{% trans 'Learning Cards' %}</h2>
+
+    {% if not user.is_authenticated %}
+        <div class="alert alert-warning" role="alert">
+            {% blocktrans %}
+                In order to save learning progress you need to create a account!
+            {% endblocktrans %}
+        </div>
+    {% endif %}
+
+    {% blocktrans %}
+        Welcome to Learning Cards online! Currently you can play quizzes for the following courses:
+    {% endblocktrans %}
+
+    <br/>
+    <br/>
+    {% for c in courses %}
+        <a href="{% url 'quiz' c.pk %}">{{ c }}</a> <br/>
+    {% endfor %}
+
+{% endblock %}

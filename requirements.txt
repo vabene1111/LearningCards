@@ -1,0 +1,8 @@
+django
+django-tables2
+django-filter
+django-crispy-forms
+markdown
+python-dotenv
+psycopg2-binary
+gunicorn
