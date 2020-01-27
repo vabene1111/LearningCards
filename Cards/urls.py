@@ -7,6 +7,9 @@ urlpatterns = [
 
     path('quiz/<int:pk>', views.quiz, name='quiz'),
 
+    path('quiz/s/<int:pk>', views.quiz_success, name='quiz_success'),
+    path('quiz/f/<int:pk>', views.quiz_fail, name='quiz_fail'),
+
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
 
     # path('list/question', lists.keyword, name='list_keyword'),

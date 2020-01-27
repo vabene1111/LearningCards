@@ -16,13 +16,19 @@
     {% endif %}
 
     {% blocktrans %}
-        Welcome to Learning Cards online! Currently you can play quizzes for the following courses:
+        Welcome to Learning Cards online! <br/>
+        The concept of this site is simple: You play quizzes for different courses. You look at a question and think of
+        the answer. After that you reveal the solution and click the appropriate button. The System will choose
+        questions for you depending on which questions you previously got wrong or right. <br/>
+
+
+        Currently you can play quizzes for the following courses:
     {% endblocktrans %}
 
     <br/>
     <br/>
     {% for c in courses %}
-        <a href="{% url 'quiz' c.pk %}">{{ c }}</a> <br/>
+        <a href="{% url 'quiz' c.pk %}">{{ c }} - ({{ c.num_questions }} {% trans 'Questions' %})</a> <br/>
     {% endfor %}
 
 {% endblock %}

@@ -19,4 +19,7 @@
     Answer:
     {{ question.answer | markdown | safe }}
 
+    <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success">{% trans 'Success' %}</a> <br/>
+    <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger">{% trans 'Failed' %}</a>
+
 {% endblock %}
