@@ -62,6 +62,10 @@ def choose_question(request, course):
 def quiz(request, pk):
     course = Course.objects.get(pk=pk)
     question = choose_question(request, pk)
+    if not question:
+        messages.add_message(request, messages.ERROR, _('There are no questions in this course yet!'))
+        return HttpResponseRedirect(reverse('index'))
+
     comments = Comment.objects.filter(question=question).all()
 
     return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments})

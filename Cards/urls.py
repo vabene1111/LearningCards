@@ -13,7 +13,7 @@ urlpatterns = [
 
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
 
-    # path('list/question', lists.keyword, name='list_keyword'),
+    path('list/question', lists.question, name='list_question'),
 
     path('edit/question/<int:pk>/', edit.QuestionUpdate.as_view(), name='edit_question'),
     path('edit/comment/<int:pk>/', edit.QuestionUpdate.as_view(), name='edit_comment'),

@@ -42,11 +42,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">{% trans 'Home' %}</a>
+                <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i> {% trans 'Home' %}</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'new_question' %}">{% trans 'Add Question' %}</a>
+                    <a class="nav-link" href="{% url 'new_question' %}"><i class="fas fa-question"></i> {% trans 'Add Question' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list_question' %}"><i class="fas fa-list-alt"></i> {% trans 'All Questions' %}</a>
                 </li>
             {% endif %}
         </ul>
@@ -54,7 +57,7 @@
         <ul class="navbar-nav">
             {% if user.is_staff %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}">{% trans 'Admin' %}</a>
+                    <a class="nav-link" href="{% url 'admin:index' %}"><i class="fas fa-user-shield"></i> {% trans 'Admin' %}</a>
                 </li>
             {% endif %}
 
