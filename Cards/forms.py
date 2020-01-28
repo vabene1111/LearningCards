@@ -11,6 +11,10 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = ('course', 'question', 'answer')
 
+        help_texts={
+            'question': _('Question and answer both support <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a> for formatting. ')
+        }
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
