@@ -13,7 +13,8 @@
 
     <div class="row">
         <div class="col col-md-12">
-            <h4>{% trans 'Question' %}</h4>
+            <h4>{% trans 'Question' %} {% if request.user == question.author or request.user.is_superuser %}
+                <a href="{% url 'edit_question' question.pk %}"><i class="fas fa-pencil-alt"></i></a> {% endif %}</h4>
             {{ question.question | markdown | safe }}
         </div>
 
@@ -33,14 +34,13 @@
     <div class="collapse" id="collapse_answer">
         <div class="row">
             <div class="col col-md-12">
-
                 <div class="card card-body">
                     <h5 class="card-title">{% trans 'Answer' %}</h5>
                     {{ question.answer | markdown | safe }}
                     <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success"><i
-                        class="fas fa-thumbs-up"></i> {% trans 'Success' %}</a>
-                <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger"><i
-                        class="fas fa-thumbs-down"></i> {% trans 'Failed' %}</a>
+                            class="fas fa-thumbs-up"></i> {% trans 'Success' %}</a>
+                    <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger"><i
+                            class="fas fa-thumbs-down"></i> {% trans 'Failed' %}</a>
                 </div>
 
             </div>

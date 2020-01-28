@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
 
     path('quiz/<int:pk>', views.quiz, name='quiz'),
+    path('quiz/<int:pk>/<int:q>', views.quiz, name='quiz_question'),
 
     path('quiz/s/<int:pk>', views.quiz_success, name='quiz_success'),
     path('quiz/f/<int:pk>', views.quiz_fail, name='quiz_fail'),

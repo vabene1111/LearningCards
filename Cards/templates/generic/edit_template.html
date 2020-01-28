@@ -23,6 +23,9 @@
         <a href="{% url 'redirect_delete' form.instance|get_class|lower form.instance.pk %}" class="btn btn-danger">
             <i class="fas fa-trash-alt"></i> {% trans 'Delete' %}</a>
 
+        {% if form.instance|get_class|lower == 'question' %}
+            <a class="btn btn-info" href="{% url 'quiz_question' form.instance.course.pk form.instance.pk %}"><i class="fas fa-eye"></i> {% trans 'View Question' %}</a>
+        {% endif %}
     </form>
 
 {% endblock %}

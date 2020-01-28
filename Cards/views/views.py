@@ -63,9 +63,17 @@ def choose_question(request, course):
         return questions.order_by("?").first()
 
 
-def quiz(request, pk):
+def quiz(request, pk, q=None):
     course = Course.objects.get(pk=pk)
-    question = choose_question(request, pk)
+    if q:
+        question = Question.objects.get(pk=q)
+    else:
+        question = choose_question(request, pk)
+
+    if q and not question:
+        messages.add_message(request, messages.ERROR, _('The requested question could not be found!'))
+        return HttpResponseRedirect(reverse('index'))
+
     if not question:
         messages.add_message(request, messages.ERROR, _('There are no questions in this course yet!'))
         return HttpResponseRedirect(reverse('index'))
