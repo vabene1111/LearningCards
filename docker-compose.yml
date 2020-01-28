@@ -1,6 +1,6 @@
 version: "3"
 services:
-  db:
+  db_quiz:
     restart: always
     image: "postgres:11-alpine"
     volumes:
@@ -10,7 +10,7 @@ services:
     networks:
       - default
 
-  web:
+  web_quiz:
     build: .
     restart: always
     env_file:
@@ -19,11 +19,11 @@ services:
     volumes:
       - .:/LearningCards
     depends_on:
-      - db
+      - db_quiz
     networks:
       - default
 
-  nginx:
+  nginx_quiz:
     image: "nginx"
     restart: always
     env_file:

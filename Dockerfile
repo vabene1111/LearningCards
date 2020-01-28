@@ -1,4 +1,3 @@
-
 FROM alpine
 
 # Project Files and Settings
