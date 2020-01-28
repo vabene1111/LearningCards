@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from Cards.forms import CommentForm, RegisterForm
+from Cards.forms import CommentForm, RegisterForm, SelectCourseForm
 from Cards.models import *
 
 
@@ -133,7 +133,9 @@ def stats(request):
     global_stats['number_questions'] = Question.objects.count()
     global_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
 
-    return render(request, "stats.html", {'global_stats': global_stats})
+    course_form = SelectCourseForm()
+
+    return render(request, "stats.html", {'global_stats': global_stats, 'course_form': course_form})
 
 
 def register(request):

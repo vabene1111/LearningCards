@@ -12,6 +12,10 @@ class CourseForm(forms.ModelForm):
         fields = ('name', 'university', 'semester', 'description')
 
 
+class SelectCourseForm(forms.Form):
+    course = forms.ModelChoiceField(queryset=Course.objects.all())
+
+
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question

@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load l10n %}
 {% load custom_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}Quiz{% endblock %}
 
@@ -23,6 +24,7 @@
 
     <div class="row">
         <div class="col col-md-12">
+            {{ course_form|crispy }}
             <canvas id="myChart"></canvas>
         </div>
     </div>
@@ -53,17 +55,29 @@
             });
         }
 
+        var elem = document.getElementById("id_course");
 
+        elem.addEventListener("change", onCourseSelectionChanged);
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                json = JSON.parse(this.responseText);
-                updateSuccessChart(json.labels, json.data_success, json.data_failure)
+        function onCourseSelectionChanged() {
+            let val = $('#id_course').val();
+            if (val !== "") {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        json = JSON.parse(this.responseText);
+                        updateSuccessChart(json.labels, json.data_success, json.data_failure)
+                    }
+                };
+
+                url = "{% url 'api_success_chart' 12345 %}".replace(/12345/, val);
+                xhttp.open("GET", url, true);
+                xhttp.send();
             }
-        };
-        xhttp.open("GET", "{% url 'api_success_chart' 2 %}", true);
-        xhttp.send();
+
+
+        }
+
 
     </script>
 
