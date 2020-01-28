@@ -36,6 +36,8 @@ def choose_question(request, course):
 
                 if recent.seconds < 900:
                     q.weight = q.weight - (9 - recent.seconds / 100)
+            else:
+                q.weight = q.weight + 5
 
             daily = datetime.now() - timedelta(hours=24)
             log_daily = QuestionLog.objects.filter(user=request.user, question=q, created_at__lt=daily).all()
