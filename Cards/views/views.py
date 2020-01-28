@@ -149,3 +149,5 @@ def register(request):
         form = RegisterForm()
 
     return render(request, "registration/signup.html", {"form": form})
+
+

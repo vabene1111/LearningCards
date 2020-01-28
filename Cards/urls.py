@@ -12,6 +12,8 @@ urlpatterns = [
     path('quiz/f/<int:pk>', views.quiz_fail, name='quiz_fail'),
     path('quiz/comment/<int:pk>', views.quiz_comment, name='quiz_comment'),
 
+    path('stats/', views.stats, name='stats'),
+
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
     path('new/course/', new.CourseCreate.as_view(), name='new_course'),
 
