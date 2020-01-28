@@ -31,4 +31,7 @@ urlpatterns = [
     path('delete/course/<int:pk>/', edit.CourseDelete.as_view(), name='delete_course'),
 
     path('register', views.register, name='register'),
+
+
+    path('api/success_chart/<int:pk>', api.success_chart, name='api_success_chart'),
 ]

@@ -1,15 +1,14 @@
-import os
 import random
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Count, Value, IntegerField
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from Cards.forms import CommentForm, RegisterForm
@@ -41,7 +40,7 @@ def choose_question(request, course):
                 q.weight = q.weight + 5
 
             daily = timezone.now() - timedelta(hours=6)
-            log_daily = QuestionLog.objects.filter(user=request.user, question=q, created_at__lt=daily).all()
+            log_daily = QuestionLog.objects.filter(user=request.user, question=q, created_at__gt=daily).all()
             for ld in log_daily:
                 if ld.type == QuestionLog.FAIL:
                     q.weight = q.weight + 2
@@ -130,8 +129,11 @@ def quiz_comment(request, pk):
 
 @login_required
 def stats(request):
+    global_stats = {}
+    global_stats['number_questions'] = Question.objects.count()
+    global_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
 
-    return render(request, "stats.html", {})
+    return render(request, "stats.html", {'global_stats': global_stats})
 
 
 def register(request):
@@ -149,5 +151,3 @@ def register(request):
         form = RegisterForm()
 
     return render(request, "registration/signup.html", {"form": form})
-
-
