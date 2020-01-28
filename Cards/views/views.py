@@ -1,4 +1,5 @@
 import os
+import random
 from datetime import datetime, timedelta
 
 from django.contrib import messages
@@ -39,7 +40,7 @@ def choose_question(request, course):
             else:
                 q.weight = q.weight + 5
 
-            daily = datetime.now() - timedelta(hours=24)
+            daily = timezone.now() - timedelta(hours=6)
             log_daily = QuestionLog.objects.filter(user=request.user, question=q, created_at__lt=daily).all()
             for ld in log_daily:
                 if ld.type == QuestionLog.FAIL:
@@ -47,20 +48,21 @@ def choose_question(request, course):
                 else:
                     q.weight = q.weight - 2
 
-            total = datetime.now() - timedelta(hours=24)
-            log_total = QuestionLog.objects.filter(user=request.user, question=q, created_at__lt=total).all()
+            log_total = QuestionLog.objects.filter(user=request.user, question=q).all()
             for lt in log_total:
                 if lt.type == QuestionLog.FAIL:
                     q.weight = q.weight + 0.5
                 else:
                     q.weight = q.weight - 0.5
 
-        question = questions[0]
+        pool = [questions[0]]
         for q in questions:
-            if q.weight > question.weight:
-                question = q
+            if q.weight > pool[0].weight:
+                pool = [q]
+            elif q.weight == pool[0].weight:
+                pool.append(q)
 
-        return question
+        return random.choice(pool)
     else:
         return questions.order_by("?").first()
 
