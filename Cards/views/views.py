@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Value, IntegerField
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -61,9 +61,16 @@ def choose_question(request, course):
             elif q.weight == pool[0].weight:
                 pool.append(q)
 
-        return random.choice(pool)
+        return questions
     else:
         return questions.order_by("?").first()
+
+
+def quiz_weight_debug(request, pk):
+    weights = choose_question(request, pk)
+    print("")
+    vals = list(weights.values())
+    return render(request, 'test.html', {'weights': weights})
 
 
 def quiz(request, pk, q=None):

@@ -12,6 +12,8 @@ urlpatterns = [
     path('quiz/f/<int:pk>', views.quiz_fail, name='quiz_fail'),
     path('quiz/comment/<int:pk>', views.quiz_comment, name='quiz_comment'),
 
+    path('quiz/debug/<int:pk>', views.quiz_weight_debug, name='quiz_debug'),  # debugging for weighting algorithm
+
     path('stats/', views.stats, name='stats'),
 
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
@@ -31,7 +33,6 @@ urlpatterns = [
     path('delete/course/<int:pk>/', edit.CourseDelete.as_view(), name='delete_course'),
 
     path('register', views.register, name='register'),
-
 
     path('api/success_chart/<int:pk>', api.success_chart, name='api_success_chart'),
 ]
