@@ -6,6 +6,12 @@ from django.utils.translation import gettext as _
 from Cards.models import *
 
 
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ('name', 'university', 'semester', 'description')
+
+
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
@@ -39,3 +45,4 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "password1", "password2"]
+

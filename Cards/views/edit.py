@@ -16,6 +16,12 @@ class QuestionUpdate(LoginRequiredMixin, UpdateView):
     form_class = QuestionForm
 
     # TODO add msg box
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not (obj.author == request.user or request.user.is_superuser):
+            messages.add_message(request, messages.ERROR, _('You cannot edit this question!'))
+            return HttpResponseRedirect(reverse('index'))
+        return super(QuestionUpdate, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('edit_question', kwargs={'pk': self.object.pk})
@@ -49,6 +55,29 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
         return context
 
 
+class CourseUpdate(LoginRequiredMixin, UpdateView):
+    template_name = "generic/edit_template.html"
+    model = Course
+    form_class = CourseForm
+
+    # TODO add msg box
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not (obj.created_by == request.user or request.user.is_superuser):
+            messages.add_message(request, messages.ERROR, _('You cannot edit this course!'))
+            return HttpResponseRedirect(reverse('index'))
+        return super(CourseUpdate, self).dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('edit_course', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseUpdate, self).get_context_data(**kwargs)
+        context['title'] = _("Course")
+        return context
+
+
 # Generic Delete views
 
 def delete_redirect(request, name, pk):
@@ -74,4 +103,15 @@ class CommentDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super(CommentDelete, self).get_context_data(**kwargs)
         context['title'] = _("Comment")
+        return context
+
+
+class CourseDelete(LoginRequiredMixin, DeleteView):
+    template_name = "generic/delete_template.html"
+    model = Course
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseDelete, self).get_context_data(**kwargs)
+        context['title'] = _("Course")
         return context

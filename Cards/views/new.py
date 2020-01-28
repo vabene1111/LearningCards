@@ -26,3 +26,23 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
         context = super(QuestionCreate, self).get_context_data(**kwargs)
         context['title'] = _("Question")
         return context
+
+
+class CourseCreate(LoginRequiredMixin, CreateView):
+    template_name = "generic/new_template.html"
+    model = Course
+    form_class = CourseForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.save()
+        return HttpResponseRedirect(reverse('edit_course', kwargs={'pk': obj.pk}))
+
+    def get_success_url(self):
+        return reverse('edit_course', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseCreate, self).get_context_data(**kwargs)
+        context['title'] = _("Course")
+        return context
