@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-
-
-
     <h2>Sign up</h2>
-    <form method="post">
+    <form method="POST" class="form-group">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign up</button>
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Register</button>
     </form>
-
 {% endblock %}

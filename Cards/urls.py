@@ -23,4 +23,5 @@ urlpatterns = [
     path('delete/recipe/<int:pk>/', edit.QuestionDelete.as_view(), name='delete_question'),
     path('delete/comment/<int:pk>/', edit.QuestionDelete.as_view(), name='delete_comment'),
 
+    path('register', views.register, name='register'),
 ]

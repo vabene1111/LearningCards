@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 
 from django.contrib import messages
@@ -10,7 +11,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from Cards.forms import CommentForm
+from Cards.forms import CommentForm, RegisterForm
 from Cards.models import *
 
 
@@ -115,16 +116,18 @@ def quiz_comment(request, pk):
     return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],
+                                    )
+            login(request, new_user)
+
+        return redirect("index")
     else:
-        form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+        form = RegisterForm()
+
+    return render(request, "registration/signup.html", {"form": form})
