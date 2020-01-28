@@ -116,6 +116,12 @@ def quiz_comment(request, pk):
     return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
 
 
+@login_required
+def stats(request):
+
+    return render(request, "stats.html", {})
+
+
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
