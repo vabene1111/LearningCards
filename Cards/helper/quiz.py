@@ -76,9 +76,9 @@ def build_question_cache(request, course_id):
 
 
 def remove_cache_entry(user, question):
-    cache_entry = QuestionCache.objects.filter(user=user, question=question).get()
-    if cache_entry:
-        cache_entry.delete()
+    cache_entries = QuestionCache.objects.filter(user=user, question=question).all()
+    for entry in cache_entries:
+        entry.delete()
 
 
 def get_next_question(request, course_id):
