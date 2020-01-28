@@ -10,8 +10,8 @@
 
     <title>{% block title %}
     {% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rCA2D+D9QXuP2TomtQwd+uP50EHjpafN+wruul0sXZzX/Da7Txn4tB9aLMZV4DZm" crossorigin="anonymous">
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -24,6 +24,7 @@
             crossorigin="anonymous"></script>
 
     <script src="https://kit.fontawesome.com/b9fffae5e7.js" crossorigin="anonymous"></script>
+
 
 
     {% block extra_head %} <!-- block for templates to put stuff into header -->
@@ -46,10 +47,12 @@
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'new_question' %}"><i class="fas fa-question"></i> {% trans 'Add Question' %}</a>
+                    <a class="nav-link" href="{% url 'new_question' %}"><i
+                            class="fas fa-question"></i> {% trans 'Add Question' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'list_question' %}"><i class="fas fa-list-alt"></i> {% trans 'All Questions' %}</a>
+                    <a class="nav-link" href="{% url 'list_question' %}"><i
+                            class="fas fa-list-alt"></i> {% trans 'All Questions' %}</a>
                 </li>
             {% endif %}
         </ul>
@@ -57,7 +60,8 @@
         <ul class="navbar-nav">
             {% if user.is_staff %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}"><i class="fas fa-user-shield"></i> {% trans 'Admin' %}</a>
+                    <a class="nav-link" href="{% url 'admin:index' %}"><i
+                            class="fas fa-user-shield"></i> {% trans 'Admin' %}</a>
                 </li>
             {% endif %}
 

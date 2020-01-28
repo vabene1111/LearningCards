@@ -8,18 +8,48 @@
 {% block content %}
 
     <h2>{% trans 'Quiz' %} <small>{{ course }}</small></h2>
-    <br/>
-
-    Question:
-    {{ question.question | markdown | safe }}
 
     <br/>
 
-    Answer:
-    {{ question.answer | markdown | safe }}
+    <div class="row">
+        <div class="col col-md-12">
+            <h4>{% trans 'Question' %}</h4>
+            {{ question.question | markdown | safe }}
+        </div>
 
-    <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success">{% trans 'Success' %}</a> <br/>
-    <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger">{% trans 'Failed' %}</a>
+    </div>
+
+
+    <br/>
+
+
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse_answer"
+            aria-expanded="false" aria-controls="collapseExample">
+        {% trans 'Show Answer' %}
+    </button>
+    <br/>
+    <br/>
+
+    <div class="collapse" id="collapse_answer">
+        <div class="row">
+            <div class="col col-md-12">
+
+                <div class="card card-body">
+                    <h5 class="card-title">{% trans 'Answer' %}</h5>
+                    {{ question.answer | markdown | safe }}
+                    <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success"><i
+                        class="fas fa-thumbs-up"></i> {% trans 'Success' %}</a>
+                <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger"><i
+                        class="fas fa-thumbs-down"></i> {% trans 'Failed' %}</a>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <br/><br/>
 
     <h5>{% trans 'Comments' %}</h5>
 
