@@ -8,11 +8,23 @@
 
 {% block content %}
 
-    <table>
+    <h2>Cache</h2>
+    <table class="table">
+        {% for c in cache %}
+            <tr>
+                <td><a href="{% url 'quiz_question' c.question.course_id c.question.id %}">{{ c.question }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <h2>Weights</h2>
+    <table class="table">
         {% for w in weights %}
             <tr>
-            <td>{{ w.question }}</td>
-            <td>{{ w.weight }}</td>
+                <td><a href="{% url 'quiz_question' w.course_id w.id %}">{{ w.question }}</a></td>
+                <td>{{ w.note }}</td>
+                <td>{{ w.weight }}</td>
             </tr>
         {% endfor %}
     </table>

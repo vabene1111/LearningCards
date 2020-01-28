@@ -45,6 +45,11 @@ class QuestionLog(models.Model):
         return str(self.user) + ' - ' + str(self.question)
 
 
+class QuestionCache(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+
 class Comment(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.TextField()
