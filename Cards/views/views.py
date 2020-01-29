@@ -125,7 +125,7 @@ def test_fail(request, pk):
 @login_required
 def test(request, pk):
     test = Test.objects.get(pk=pk)
-    tq = TestQuestion.objects.filter(test=test, type=None).order_by('?').first()
+    tq = TestQuestion.objects.filter(test=test, type__isnull=True).order_by('?').first()
 
     if not tq:
         return HttpResponseRedirect(reverse('test_stats', args=[test.pk]))
@@ -133,7 +133,10 @@ def test(request, pk):
     success_url = reverse('test_success', args=[tq.pk])
     failure_url = reverse('test_fail', args=[tq.pk])
 
-    return render(request, "test.html", {'question': tq.question, 'test': test, 'success_url': success_url, 'failure_url': failure_url})
+    test_progress = {'questions': TestQuestion.objects.filter(test=test).count(), 'questions_done': TestQuestion.objects.filter(test=test, type__isnull=False).count()}
+    test_progress['questions_progress'] = 100 / test_progress['questions'] * test_progress['questions_done']
+
+    return render(request, "test.html", {'question': tq.question, 'test': test, 'test_progress': test_progress, 'success_url': success_url, 'failure_url': failure_url})
 
 
 @login_required
@@ -150,7 +153,10 @@ def test_overview(request):
 def test_stats(request, pk):
     test = Test.objects.get(pk=pk)
 
-    return render(request, "test_stats.html", {})
+    failed_questions = TestQuestion.objects.filter(test=test, type=QuestionLog.FAIL)
+    successfull_questions = TestQuestion.objects.filter(test=test, type=QuestionLog.SUCCESS)
+
+    return render(request, "test_stats.html", {'test': test, 'failed_questions': failed_questions, 'successfull_questions': successfull_questions})
 
 
 @login_required

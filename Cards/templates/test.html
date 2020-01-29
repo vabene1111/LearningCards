@@ -10,6 +10,13 @@
 
     <h2>Test <small>{{ test.course }}</small></h2>
 
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{ test_progress.questions_progress|safe }}%;" aria-valuenow="{{ test_progress.questions_progress|safe }}" aria-valuemin="0"
+             aria-valuemax="100">{{ test_progress.questions_done }}/{{ test_progress.questions }}
+        </div>
+    </div>
+
+    <br/>
 
     {% include 'include/question.html' %}
 {% endblock %}

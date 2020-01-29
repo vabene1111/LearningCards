@@ -4,12 +4,72 @@
 {% load custom_tags %}
 {% load crispy_forms_tags %}
 
-
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"
+            integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+{% endblock %}
 
 {% block content %}
 
     <h2>{% trans 'Test Review' %}</h2>
+    <h4>{{ test.course }} <small class="text-muted">{{ test.created_at }}</small></h4>
 
+    <div class="row">
+        <div class="col-md-12">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <br/>
+    <br/>
 
+    <div class="row">
+        <div class="col-md-6">
+            <h4>{% trans 'Failed Questions' %}</h4>
+            <table class="table">
+                {% for q in failed_questions %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'quiz_question' q.question.course.pk q.question.pk %}">{{ q.question.question | markdown }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h4>{% trans 'Successfull Questions' %}</h4>
+            <table class="table">
+                {% for q in successfull_questions %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'quiz_question' q.question.course.pk q.question.pk %}">{{ q.question.question | markdown |safe }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+        let ctx = document.getElementById('myChart').getContext('2d');
+        var myDoughnutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data = {
+                datasets: [{
+                    data: [{{ successfull_questions | length }}, {{ failed_questions | length }}],
+                    borderColor: ['rgb(80,158,47)', 'rgb(230,31,28)'],
+                }],
+
+                labels: [
+                    '{% trans 'Successfull Questions' %}',
+                    '{% trans 'Failed Questions' %}'
+                ]
+            }
+            ,
+            options: {}
+        })
+    </script>
 
 {% endblock %}
