@@ -15,7 +15,7 @@ def success_chart(request, pk):
     week = timezone.now() - timedelta(days=7)
 
     success_log = QuestionLog.objects.filter(user=request.user, question__course__pk=pk, created_at__gt=week).annotate(time_range=Trunc('created_at', 'hour')).values(
-        'time_range').annotate(count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)), count_failure=Count('id', filter=Q(type=QuestionLog.FAIL)))
+        'time_range').annotate(count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)), count_failure=Count('id', filter=Q(type=QuestionLog.FAIL))).order_by('time_range')
 
     response = {'labels': [], 'data_success': [], 'data_failure': []}
     for i, e in enumerate(success_log):
