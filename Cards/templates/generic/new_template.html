@@ -25,19 +25,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            let input_icon = $('#id_icon');
-
-            input_icon.on('paste', function () {
-
-                setTimeout(function () {
-                    let text = input_icon.val();
-                    text = text.replace('<i class="', '');
-                    text = text.replace('"></i>', '');
-
-                    input_icon.val(text)
-                }, 15);
-
-            });
+            let course = {{ default_course }};
+            if (course !== -1) {
+                $('#id_course').val(course)
+            }
         });
     </script>
 
