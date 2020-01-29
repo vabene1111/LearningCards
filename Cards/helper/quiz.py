@@ -71,8 +71,9 @@ def build_question_cache(request, course_id):
         question = Question.objects.get(id=q['id'])
         add_cache_entry(request.user, question)
 
-    question = Question.objects.get(id=random.choice(weights[:len(weights) // 2])['id'])
-    add_cache_entry(request.user, question)
+    if len(weights) > 2:
+        question = Question.objects.get(id=random.choice(weights[:len(weights) // 2])['id'])
+        add_cache_entry(request.user, question)
 
 
 def remove_cache_entry(user, question):

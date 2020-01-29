@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load l10n %}
+{% load custom_tags %}
+{% load django_tables2 %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+    <h2>{% trans 'Test Overview' %}</h2>
+    {% blocktrans %}
+        In a Test each question from a course is asked in random order once.
+    {% endblocktrans %}
+
+    <br/>
+    <br/>
+    <h3>{% trans 'Start new Test' %}</h3>
+    <div class="row">
+        <div class="col col-md-6">
+            {{ course_form|crispy }}
+            <button class="btn btn-success" onclick="startTest()">{% trans 'Start Test' %}</button>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <h3>{% trans 'Your Tests' %}</h3>
+    {% if tests %}
+        {% render_table tests %}
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            {% blocktrans %}
+                You have not started any test yet!
+            {% endblocktrans %}
+        </div>
+    {% endif %}
+
+    <script type="text/javascript">
+        function startTest() {
+
+            let val = $('#id_course').val();
+            if (val !== "") {
+                url = "{% url 'test_start' 12345 %}".replace(/12345/, val);
+                window.location.href = url
+            } else {
+                alert("{% trans 'You need to select a course to start a test!' %}")
+            }
+        }
+    </script>
+
+{% endblock %}

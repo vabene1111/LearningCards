@@ -53,6 +53,18 @@ class QuestionCache(models.Model):
         return str(self.user) + ' - ' + str(self.question)
 
 
+class Test(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class TestQuestion(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    type = models.CharField(choices=QuestionLog.STATUS_TYPES, max_length=128, blank=True, null=True)
+
+
 class Comment(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.TextField()

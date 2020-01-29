@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Count
 from django.forms import widgets
 from django.utils.translation import gettext as _
 
@@ -13,7 +14,7 @@ class CourseForm(forms.ModelForm):
 
 
 class SelectCourseForm(forms.Form):
-    course = forms.ModelChoiceField(queryset=Course.objects.all())
+    course = forms.ModelChoiceField(queryset=Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all())
 
 
 class QuestionForm(forms.ModelForm):

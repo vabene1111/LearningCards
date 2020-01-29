@@ -22,3 +22,12 @@ class CourseTable(tables.Table):
         model = Course
         template_name = 'generic/table_template.html'
         fields = ('id', 'name', 'university', 'semester')
+
+
+class TestTable(tables.Table):
+    id = tables.LinkColumn('test', args=[A('id')])
+
+    class Meta:
+        model = Test
+        template_name = 'generic/table_template.html'
+        fields = ('id', 'course')

@@ -6,10 +6,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
+from django_tables2 import RequestConfig
 
 from Cards.forms import CommentForm, RegisterForm, SelectCourseForm
-from Cards.helper import finish_question, get_next_question, get_weighted_questions
+from Cards.helper import finish_question, get_next_question, get_weighted_questions, create_new_test, finish_test_question
 from Cards.models import *
+from Cards.tables import TestTable
 
 
 def index(request):
@@ -22,7 +24,7 @@ def quiz_weight_debug(request, pk):
     cache = QuestionCache.objects.filter(user=request.user, question__course=pk).all()
     weights = get_weighted_questions(request, pk)
 
-    return render(request, 'test.html', {'weights': weights, 'cache': cache})
+    return render(request, 'debug.html', {'weights': weights, 'cache': cache})
 
 
 def quiz(request, pk, q=None):
@@ -45,14 +47,17 @@ def quiz(request, pk, q=None):
     if request.user.is_authenticated:
         logs = QuestionLog.objects.filter(question=question, user=request.user).all()
         if len(logs) > 0:
-            log_percent = 100/len(logs)
+            log_percent = 100 / len(logs)
         else:
             log_percent = 100
     else:
         logs = None
         log_percent = None
 
-    return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments, 'logs': logs, 'log_percent': log_percent})
+    success_url = reverse('quiz_success', args=[question.pk])
+    failure_url = reverse('quiz_fail', args=[question.pk])
+
+    return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments, 'logs': logs, 'log_percent': log_percent, 'success_url': success_url, 'failure_url': failure_url})
 
 
 def quiz_success(request, pk):
@@ -101,6 +106,63 @@ def stats(request):
     course_form = SelectCourseForm()
 
     return render(request, "stats.html", {'global_stats': global_stats, 'course_form': course_form})
+
+
+def test_success(request, pk):
+    question = TestQuestion.objects.get(pk=pk)
+    finish_test_question(request.user, question, QuestionLog.SUCCESS)
+
+    return HttpResponseRedirect(reverse('test', args=[question.test.pk]))
+
+
+def test_fail(request, pk):
+    question = TestQuestion.objects.get(pk=pk)
+    finish_test_question(request.user, question, QuestionLog.FAIL)
+
+    return HttpResponseRedirect(reverse('test', args=[question.test.pk]))
+
+
+@login_required
+def test(request, pk):
+    test = Test.objects.get(pk=pk)
+    tq = TestQuestion.objects.filter(test=test, type=None).order_by('?').first()
+
+    if not tq:
+        return HttpResponseRedirect(reverse('test_stats', args=[test.pk]))
+
+    success_url = reverse('test_success', args=[tq.pk])
+    failure_url = reverse('test_fail', args=[tq.pk])
+
+    return render(request, "test.html", {'question': tq.question, 'test': test, 'success_url': success_url, 'failure_url': failure_url})
+
+
+@login_required
+def test_overview(request):
+    table = TestTable(Test.objects.filter(user=request.user).order_by('created_at').all())
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+
+    course_form = SelectCourseForm()
+
+    return render(request, "test_overview.html", {'tests': table, 'course_form': course_form})
+
+
+@login_required
+def test_stats(request, pk):
+    test = Test.objects.get(pk=pk)
+
+    return render(request, "test_stats.html", {})
+
+
+@login_required
+def test_start(request, pk):
+    course = Course.objects.get(pk=pk)
+    if not course:
+        messages.add_message(request, messages.ERROR, _('There was an error finding the selected course!'))
+        return redirect("test_overview")
+
+    test = create_new_test(request.user, course)
+
+    return HttpResponseRedirect(reverse('test', args=[test.pk]))
 
 
 def register(request):

@@ -16,6 +16,14 @@ urlpatterns = [
 
     path('stats/', views.stats, name='stats'),
 
+    path('test/overview/', views.test_overview, name='test_overview'),
+    path('test/start/<int:pk>', views.test_start, name='test_start'),
+    path('test/stats/<int:pk>', views.test_stats, name='test_stats'),
+
+    path('test/<int:pk>', views.test, name='test'),
+    path('test/s/<int:pk>', views.test_success, name='test_success'),
+    path('test/f/<int:pk>', views.test_fail, name='test_fail'),
+
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
     path('new/course/', new.CourseCreate.as_view(), name='new_course'),
 
