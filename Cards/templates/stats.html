@@ -9,18 +9,28 @@
 {% block extra_head %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"
             integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+
+
 {% endblock %}
 
 {% block content %}
 
-    <h2>{% trans 'Stats' %}</h2>
+    <h2><i class="fas fa-chart-line"></i> {% trans 'Stats' %}</h2>
+    <br/>
 
     <div class="row">
-        <div class="col col-md-12">
-            Total unique Questions {{ global_stats.number_questions }} <br/>
-            Total Questions played {{ global_stats.number_questions_played }}
+        <div class="col col-md-4">
+            <h3>{{ global_stats.number_questions_played }}<small> Questions played</small></h3>
+        </div>
+        <div class="col col-md-4">
+            <h3>{{ global_stats.number_questions_success }} ({{ global_stats.number_questions_success_percent | floatformat }}%)<small> <i style="color:#509E2F" class="far fa-thumbs-up"></i></small></h3>
+        </div>
+        <div class="col col-md-4">
+            <h3>{{ global_stats.number_questions_failure }} ({{ global_stats.number_questions_failure_percent | floatformat }}%)<small> <i style="color:#E61F1C" class="far fa-thumbs-down"></i></small></h3>
         </div>
     </div>
+
+    <br/>
 
     <div class="row">
         <div class="col col-md-12">
@@ -28,9 +38,6 @@
             <canvas id="myChart"></canvas>
         </div>
     </div>
-
-
-
 
     <script type="text/javascript">
         function updateSuccessChart(labels, data_success, data_failure) {
@@ -55,8 +62,7 @@
             });
         }
 
-        var elem = document.getElementById("id_course");
-
+        let elem = document.getElementById("id_course");
         elem.addEventListener("change", onCourseSelectionChanged);
 
         function onCourseSelectionChanged() {
@@ -74,10 +80,7 @@
                 xhttp.open("GET", url, true);
                 xhttp.send();
             }
-
-
         }
-
 
     </script>
 

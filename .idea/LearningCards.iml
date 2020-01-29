@@ -20,6 +20,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="b9fffae5e7" level="application" />
     <orderEntry type="library" name="darkmode-js" level="application" />
+    <orderEntry type="library" name="rough" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

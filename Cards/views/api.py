@@ -25,3 +25,4 @@ def success_chart(request, pk):
         response['data_failure'].append(e['count_failure'])
 
     return JsonResponse(response)
+

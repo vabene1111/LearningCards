@@ -13,7 +13,7 @@ from Cards.models import *
 
 
 def index(request):
-    courses = Course.objects.annotate(num_questions=Count('question')).all()
+    courses = Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all()
 
     return render(request, 'index.html', {'courses': courses})
 
@@ -83,6 +83,10 @@ def stats(request):
     global_stats = {}
     global_stats['number_questions'] = Question.objects.count()
     global_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
+    global_stats['number_questions_success'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.SUCCESS).count()
+    global_stats['number_questions_failure'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.FAIL).count()
+    global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_success']
+    global_stats['number_questions_failure_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_failure']
 
     course_form = SelectCourseForm()
 

@@ -7,19 +7,23 @@
 
 {% block content %}
 
-    <h2>{% trans 'Quiz' %} <small>{{ course }}</small></h2>
-
+    <h3>{% trans 'Quiz' %} <small class="text-muted">{{ course }}</small></h3>
     <br/>
 
+    <h5 class="text-success">{% if request.user == question.author or request.user.is_superuser %}
+        <a href="{% url 'edit_question' question.pk %}"><i
+                class="fas fa-pencil-alt"></i></a> {% endif %} {% trans 'Question' %} <small
+            class="text-muted">{% trans 'by' %} {{ question.author.first_name }} {{ question.author.last_name }}</small>
+    </h5>
+    <br/>
     <div class="row">
         <div class="col col-md-12">
-            <h4>{% trans 'Question' %} {% if request.user == question.author or request.user.is_superuser %}
-                <a href="{% url 'edit_question' question.pk %}"><i class="fas fa-pencil-alt"></i></a> {% endif %}</h4>
-            {{ question.question | markdown | safe }}
+            <span style="font-size: large">
+                {{ question.question | markdown | safe }}
+            </span>
         </div>
 
     </div>
-
 
     <br/>
 
@@ -35,12 +39,19 @@
         <div class="row">
             <div class="col col-md-12">
                 <div class="card card-body">
-                    <h5 class="card-title">{% trans 'Answer' %}</h5>
-                    {{ question.answer | markdown | safe }}
-                    <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success"><i
-                            class="fas fa-thumbs-up"></i> {% trans 'Success' %}</a>
-                    <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger"><i
-                            class="fas fa-thumbs-down"></i> {% trans 'Failed' %}</a>
+                    <h5 class="card-title text-success">{% trans 'Answer' %}</h5>
+                    <span style="font-size: large; padding: 1vw" class="border rounded">
+                        {{ question.answer | markdown | safe }}
+                    </span>
+                    <br/>
+
+                    <div class="btn-group" role="group" >
+                        <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success"><i
+                                class="fas fa-thumbs-up fa-2x"></i></a>
+                        <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger"><i
+                                class="fas fa-thumbs-down fa-2x"></i></a>
+                    </div>
+
                 </div>
 
             </div>
@@ -49,6 +60,19 @@
         <br/><br/>
 
         <h5>{% trans 'Comments' %}</h5>
+
+        {% for c in comments %}
+            <div class="card">
+                <div class="card-body">
+                    <small class="card-title">{{ c.updated_at }} {% trans 'by' %} {{ c.created_by.first_name }} {{ c.created_by.last_name }}</small>
+                    <a
+                            href="{% url 'edit_comment' c.pk %}" class="d-print-none"><i
+                            class="fas fa-pencil-alt"></i></a><br/>
+                    {{ c.text }}
+                </div>
+            </div>
+            <br/>
+        {% endfor %}
 
         <form method="POST" class="post-form" action="{% url 'quiz_comment' question.pk %}">
             {% csrf_token %}
@@ -61,17 +85,7 @@
             </div>
         </form>
 
-        {% for c in comments %}
-            <div class="card">
-                <div class="card-body">
-                    <small class="card-title">{{ c.updated_at }} {% trans 'by' %} {{ c.created_by.username }}</small> <a
-                        href="{% url 'edit_comment' c.pk %}" class="d-print-none"><i
-                        class="fas fa-pencil-alt"></i></a><br/>
-                    {{ c.text }}
-                </div>
-            </div>
-            <br/>
-        {% endfor %}
+
     </div>
 
 
