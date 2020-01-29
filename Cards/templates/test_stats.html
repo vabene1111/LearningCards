@@ -29,7 +29,7 @@
                 {% for q in failed_questions %}
                     <tr>
                         <td>
-                            <a href="{% url 'quiz_question' q.question.course.pk q.question.pk %}">{{ q.question.question | markdown }}</a>
+                            <a href="{% url 'quiz_question' q.question.course.pk q.question.pk %}">{{ q.question.question | markdown |safe }}</a>
                         </td>
                     </tr>
                 {% endfor %}
