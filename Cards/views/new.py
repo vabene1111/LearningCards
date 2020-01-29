@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -17,10 +18,12 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
         obj = form.save(commit=False)
         obj.author = self.request.user
         obj.save()
-        return HttpResponseRedirect(reverse('edit_question', kwargs={'pk': obj.pk}))
+
+        messages.add_message(self.request, messages.SUCCESS, _('Question saved! You can view it here <a href={}>here</a>').format(reverse('edit_question', kwargs={'pk': obj.pk})))
+        return HttpResponseRedirect(reverse('new_question'))
 
     def get_success_url(self):
-        return reverse('edit_question', kwargs={'pk': self.object.pk})
+        return reverse('new_question')
 
     def get_context_data(self, **kwargs):
         context = super(QuestionCreate, self).get_context_data(**kwargs)
