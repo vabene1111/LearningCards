@@ -6,13 +6,12 @@
 {% block title %}Quiz{% endblock %}
 
 {% block content %}
-
-    <h3>{% trans 'Quiz' %} <small class="text-muted">{{ course }}</small></h3>
+    <div style="text-align: center">
+        <h3>{% trans 'Quiz' %} <small class="text-muted">{{ course }}</small></h3>
+    </div>
     <br/>
 
-    <h5 class="text-success">{% if request.user == question.author or request.user.is_superuser %}
-        <a href="{% url 'edit_question' question.pk %}"><i
-                class="fas fa-pencil-alt"></i></a> {% endif %} {% trans 'Question' %} <small
+    <h5 class="text-success"> {% trans 'Question' %} <small
             class="text-muted">{% trans 'by' %} {{ question.author.first_name }} {{ question.author.last_name }}</small>
     </h5>
     <br/>
@@ -27,11 +26,16 @@
 
     <br/>
 
+    <div class="row">
+        <div class="col col-lg-4 col-lg-push-4 col-md-12" style="text-align: center">
+            <button style="width: 100%" class="btn btn-primary" type="button" data-toggle="collapse"
+                    data-target="#collapse_answer"
+                    aria-expanded="false" aria-controls="collapseExample">
+                {% trans 'Show Answer' %}
+            </button>
+        </div>
+    </div>
 
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse_answer"
-            aria-expanded="false" aria-controls="collapseExample">
-        {% trans 'Show Answer' %}
-    </button>
     <br/>
     <br/>
 
@@ -39,17 +43,40 @@
         <div class="row">
             <div class="col col-md-12">
                 <div class="card card-body">
-                    <h5 class="card-title text-success">{% trans 'Answer' %}</h5>
-                    <span style="font-size: large; padding: 1vw" class="border rounded">
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-title text-success">{% trans 'Answer' %}</h5>
+                        </div>
+                        <div class="col-md-6 pull-right" style="text-align: right">
+                            {% if request.user == question.author or request.user.is_superuser %}
+                                <a href="{% url 'edit_question' question.pk %}"><i
+                                        class="fas fa-pencil-alt"></i></a> {% endif %}
+                        </div>
+                    </div>
+
+                    <span style="font-size: large; padding: 8px;" class="border rounded">
                         {{ question.answer | markdown | safe }}
                     </span>
                     <br/>
 
-                    <div class="btn-group" role="group" >
+                    <div class="btn-group" role="group">
                         <a href="{% url 'quiz_success' question.pk %}" class="btn btn-success"><i
                                 class="fas fa-thumbs-up fa-2x"></i></a>
                         <a href="{% url 'quiz_fail' question.pk %}" class="btn btn-danger"><i
                                 class="fas fa-thumbs-down fa-2x"></i></a>
+                    </div>
+
+                    <br/>
+                    <span>{% trans 'Question History' %}</span>
+                    <div class="progress">
+                        {% for l in logs %}
+                            <div class="progress-bar bg-{% if l.type == 'FAIL' %}danger{% else %}success{% endif %} cycle"
+                                 role="progressbar" style="width: {{ log_percent | safe }}%; margin-right: 1px"
+                                 aria-valuenow="{{ log_percent }}"
+                                 aria-valuemin="0" aria-valuemax="100"></div>
+                        {% endfor %}
                     </div>
 
                 </div>
