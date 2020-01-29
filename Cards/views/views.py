@@ -41,12 +41,17 @@ def quiz(request, pk, q=None):
         return HttpResponseRedirect(reverse('index'))
 
     comments = Comment.objects.filter(question=question).all()
-    logs = QuestionLog.objects.filter(question=question, user=request.user).all()
-    if len(logs) > 0:
-        log_percent = 100/len(logs)
+
+    if request.user.is_authenticated:
+        logs = QuestionLog.objects.filter(question=question, user=request.user).all()
+        if len(logs) > 0:
+            log_percent = 100/len(logs)
+        else:
+            log_percent = 100
     else:
-        log_percent = 100
-    
+        logs = None
+        log_percent = None
+
     return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments, 'logs': logs, 'log_percent': log_percent})
 
 

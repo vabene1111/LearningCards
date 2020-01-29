@@ -65,17 +65,18 @@
                                 class="fas fa-thumbs-down fa-2x"></i></a>
                     </div>
 
-                    <br/>
-                    <span>{% trans 'Question History' %}</span>
-                    <div class="progress">
-                        {% for l in logs %}
-                            <div class="progress-bar bg-{% if l.type == 'FAIL' %}danger{% else %}success{% endif %} cycle"
-                                 role="progressbar" style="width: {{ log_percent | safe }}%; margin-right: 1px"
-                                 aria-valuenow="{{ log_percent }}"
-                                 aria-valuemin="0" aria-valuemax="100"></div>
-                        {% endfor %}
-                    </div>
-
+                    {% if logs %}
+                        <br/>
+                        <span>{% trans 'Question History' %}</span>
+                        <div class="progress">
+                            {% for l in logs %}
+                                <div class="progress-bar bg-{% if l.type == 'FAIL' %}danger{% else %}success{% endif %} cycle"
+                                     role="progressbar" style="width: {{ log_percent | safe }}%; margin-right: 1px"
+                                     aria-valuenow="{{ log_percent }}"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
             </div>
@@ -115,7 +116,7 @@
     <script type="text/javascript">
         function expandAnswer() {
             $('#btn_answer').remove();
-            $('#btn_group_vote').scrollTop( 1 );
+            $('#btn_group_vote').scrollTop(1);
 
         }
     </script>
