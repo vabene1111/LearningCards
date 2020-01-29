@@ -128,6 +128,8 @@ def test(request, pk):
     tq = TestQuestion.objects.filter(test=test, type__isnull=True).order_by('?').first()
 
     if not tq:
+        test.completed = True
+        test.save()
         return HttpResponseRedirect(reverse('test_stats', args=[test.pk]))
 
     success_url = reverse('test_success', args=[tq.pk])

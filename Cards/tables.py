@@ -1,5 +1,6 @@
 import django_tables2 as tables
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django_tables2.utils import A  # alias for Accessor
 
@@ -26,8 +27,15 @@ class CourseTable(tables.Table):
 
 class TestTable(tables.Table):
     id = tables.LinkColumn('test', args=[A('id')])
+    status = tables.Column(empty_values=())
+
+    def render_status(self, record):
+        if record.completed:
+            return mark_safe('<span class="badge badge-success">' + _('Complete') + '</span>')
+        else:
+            return mark_safe('<span class="badge badge-warning">' + _('Incomplete') + '</span>')
 
     class Meta:
         model = Test
         template_name = 'generic/table_template.html'
-        fields = ('id', 'course')
+        fields = ('id', 'course', 'created_at')
