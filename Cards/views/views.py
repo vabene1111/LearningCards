@@ -110,6 +110,10 @@ def stats(request):
 
 def test_success(request, pk):
     question = TestQuestion.objects.get(pk=pk)
+
+    if question.test.user != request.user:
+        return HttpResponseRedirect(reverse('index'))
+
     finish_test_question(request.user, question, QuestionLog.SUCCESS)
 
     return HttpResponseRedirect(reverse('test', args=[question.test.pk]))
@@ -117,6 +121,10 @@ def test_success(request, pk):
 
 def test_fail(request, pk):
     question = TestQuestion.objects.get(pk=pk)
+
+    if question.test.user != request.user:
+        return HttpResponseRedirect(reverse('index'))
+
     finish_test_question(request.user, question, QuestionLog.FAIL)
 
     return HttpResponseRedirect(reverse('test', args=[question.test.pk]))
@@ -125,6 +133,10 @@ def test_fail(request, pk):
 @login_required
 def test(request, pk):
     test = Test.objects.get(pk=pk)
+
+    if test.user != request.user:
+        return HttpResponseRedirect(reverse('index'))
+
     tq = TestQuestion.objects.filter(test=test, type__isnull=True).order_by('?').first()
 
     if not tq:
@@ -154,6 +166,9 @@ def test_overview(request):
 @login_required
 def test_stats(request, pk):
     test = Test.objects.get(pk=pk)
+
+    if test.user != request.user:
+        return HttpResponseRedirect(reverse('index'))
 
     failed_questions = TestQuestion.objects.filter(test=test, type=QuestionLog.FAIL)
     successfull_questions = TestQuestion.objects.filter(test=test, type=QuestionLog.SUCCESS)
