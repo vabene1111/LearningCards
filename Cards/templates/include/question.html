@@ -87,13 +87,12 @@
                 {{ c.text|markdown|safe }}
             </div>
         </div>
-        <br/>
     {% endfor %}
 
     <form method="POST" class="post-form" action="{% url 'quiz_comment' question.pk %}">
         {% csrf_token %}
         <div class="input-group mb-3">
-            <textarea name="text" cols="15" rows="2" class="textarea form-control" required
+            <textarea name="text" cols="15" rows="3" class="textarea form-control" required
                       id="id_text"></textarea>
             <div class="input-group-append">
                 <input type="submit" value="{% trans 'Comment' %}" class="btn btn-success">
