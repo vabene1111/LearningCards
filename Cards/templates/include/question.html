@@ -84,7 +84,7 @@
                 <a
                         href="{% url 'edit_comment' c.pk %}" class="d-print-none"><i
                         class="fas fa-pencil-alt"></i></a><br/>
-                {{ c.text|markdown }}
+                {{ c.text|markdown|safe }}
             </div>
         </div>
         <br/>
