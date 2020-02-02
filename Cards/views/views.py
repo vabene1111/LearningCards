@@ -150,7 +150,15 @@ def test(request, pk):
     test_progress = {'questions': TestQuestion.objects.filter(test=test).count(), 'questions_done': TestQuestion.objects.filter(test=test, type__isnull=False).count()}
     test_progress['questions_progress'] = 100 / test_progress['questions'] * test_progress['questions_done']
 
-    return render(request, "test.html", {'question': tq.question, 'test': test, 'test_progress': test_progress, 'success_url': success_url, 'failure_url': failure_url})
+    comments = Comment.objects.filter(question=tq.question).all()
+
+    logs = QuestionLog.objects.filter(question=tq.question, user=request.user).all()
+    if len(logs) > 0:
+        log_percent = 100 / len(logs)
+    else:
+        log_percent = 100
+
+    return render(request, "test.html", {'question': tq.question, 'test': test, 'test_progress': test_progress, 'comments': comments, 'logs': logs, 'log_percent': log_percent, 'success_url': success_url, 'failure_url': failure_url})
 
 
 @login_required

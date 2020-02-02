@@ -4,11 +4,11 @@
 {% load custom_tags %}
 {% load crispy_forms_tags %}
 
-
+{% block title %}Test{% endblock %}
 
 {% block content %}
 
-    <h2>Test <small>{{ test.course }}</small></h2>
+    <h2>Test <small class="text-muted">{{ test.course }}</small></h2>
 
     <div class="progress">
         <div class="progress-bar" role="progressbar" style="width: {{ test_progress.questions_progress|safe }}%;" aria-valuenow="{{ test_progress.questions_progress|safe }}" aria-valuemin="0"
