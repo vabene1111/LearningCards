@@ -59,6 +59,9 @@ class Test(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.user) + ' - ' + str(self.created_at) + ' - ' + str(self.course)
+
 
 class TestQuestion(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
