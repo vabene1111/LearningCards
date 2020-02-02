@@ -148,7 +148,7 @@ def test(request, pk):
     failure_url = reverse('test_fail', args=[tq.pk])
 
     test_progress = {'questions': TestQuestion.objects.filter(test=test).count(), 'questions_done': TestQuestion.objects.filter(test=test, type__isnull=False).count()}
-    test_progress['questions_progress'] = 100 / test_progress['questions'] * test_progress['questions_done']
+    test_progress['questions_progress'] = (100 / test_progress['questions'] * test_progress['questions_done']) + 1
 
     comments = Comment.objects.filter(question=tq.question).all()
 
