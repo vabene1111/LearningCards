@@ -42,7 +42,7 @@ class QuestionLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.user) + ' - ' + str(self.question)
+        return str(self.created_at) + ' - ' + str(self.user) + ' - ' + str(self.question)
 
 
 class QuestionCache(models.Model):
