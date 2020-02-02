@@ -4,6 +4,8 @@ django-filter
 django-crispy-forms
 djangorestframework
 markdown
+bleach
+bleach-whitelist
 python-dotenv
 psycopg2-binary
 gunicorn
