@@ -6,7 +6,7 @@
 {% block content %}
 
     <h2><i class="fas fa-graduation-cap"></i> {% trans 'Learning Cards' %}</h2>
-
+    <br/><br/>
     {% if not user.is_authenticated %}
         <div class="alert alert-warning" role="alert">
             {% blocktrans %}
@@ -15,23 +15,36 @@
         </div>
     {% endif %}
 
-    {% blocktrans %}
-        Welcome to Learning Cards online! <br/>
-        The concept of this site is simple: You play quizzes for different courses. You look at a question and think of
-        the answer. After that you reveal the solution and click the appropriate button. The System will choose
-        questions for you depending on which questions you previously got wrong or right. <br/>
-
-
-        Currently you can play quizzes for the following courses:
-    {% endblocktrans %}
-
-    <br/>
-    <br/>
-
 
     <div class="row">
-        
-        <div class="col col-md-6">
+        <div class="col col-lg-6 col-12">
+            {% blocktrans %}
+                <b>Welcome to Learning Cards online!</b> <br/><br/>
+                The concept of this site is simple:
+                <ol>
+                    <li>Select a quiz and answer the question (for yourself)!</li>
+                    <li>Look at the answer and select if you answered correctly or not</li>
+                    <li>Repeat!</li>
+                </ol>
+                The system will automatically choose relevant questions based on several factors so you can focus on
+                learning what you need to learn.  <br/><br/>
+                Everyone can (and probably should) contribute new questions so that other can benefit!
+            {% endblocktrans %}
+
+            <br/>
+            <br/>
+
+            <h4><i class="fab fa-github"></i> {% trans 'Open Soruce' %}</h4>
+            {% blocktrans %}
+                This application is FOSS (Free Open Source Software) licensed under the <a href="https://github.com/vabene1111/LearningCards/blob/master/LICENSE.md" target="_blank">MIT License</a>.
+                It can be found on <a target="_blank" href="https://github.com/vabene1111/LearningCards">GitHub</a>
+            {% endblocktrans %}
+            <br/>
+            <br/>
+        </div>
+
+        <div class="col">
+            <h2>{% trans 'Quizzes' %}</h2>
             <ul class="list-group list-group-flush">
                 {% for c in courses %}
 
@@ -54,11 +67,9 @@
                                             &nbsp;&nbsp;&nbsp;&nbsp;<a
                                                 href="{% url 'quiz_chapter' c.pk ch.pk %}">{{ ch.name }}</a>
                                         </div>
-
                                         <div class="col col-1">
                                             <span class="badge badge-primary badge-pill">{{ ch.num_questions }}</span>
                                         </div>
-
                                     </div>
                                 {% endif %}
                             {% endfor %}
