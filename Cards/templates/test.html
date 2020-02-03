@@ -8,7 +8,15 @@
 
 {% block content %}
 
-    <h2>Test <small class="text-muted">{{ test.course }}</small></h2>
+
+
+    <div style="text-align: center">
+        <h2>Test</h2>
+        <h3 class="text-muted">{{ test.course }}</h3>
+        {% if question.chapter %}
+            <h4><small class="text-primary">{{ question.chapter.name }}</small></h4>
+        {% endif %}
+    </div>
 
     <div class="progress">
         <div class="progress-bar" role="progressbar" style="width: {{ test_progress.questions_progress|safe }}%;" aria-valuenow="{{ test_progress.questions_progress|safe }}" aria-valuemin="0"

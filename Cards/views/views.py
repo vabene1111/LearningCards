@@ -177,7 +177,7 @@ def test(request, pk):
 
 @login_required
 def test_overview(request):
-    table = TestTable(Test.objects.filter(user=request.user).order_by('created_at').all())
+    table = TestTable(Test.objects.filter(user=request.user).order_by('-created_at').all())
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
     course_form = SelectCourseForm()

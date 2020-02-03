@@ -7,9 +7,10 @@
 
 {% block content %}
     <div style="text-align: center">
-        <h3>{% trans 'Quiz' %} <small class="text-muted">{{ course }}</small></h3>
+
+        <h3 class="text-muted">{{ course }}</h3>
         {% if question.chapter %}
-            <h4><small class="text-muted">{{ question.chapter.name }}</small></h4>
+            <h4><small class="text-primary">{{ question.chapter.name }}</small></h4>
         {% endif %}
     </div>
     <br/>
