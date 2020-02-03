@@ -13,5 +13,6 @@ def get_class(value):
 
 @register.filter()
 def markdown(value):
-    return bleach.clean(md.markdown(value, extensions=['markdown.extensions.fenced_code']), markdown_tags, markdown_attrs)
-
+    tags = markdown_tags
+    tags.append('pre')
+    return bleach.clean(md.markdown(value, extensions=['markdown.extensions.fenced_code']), tags, markdown_attrs)
