@@ -9,7 +9,7 @@ from .models import *
 
 class QuestionTable(tables.Table):
     id = tables.LinkColumn('edit_question', args=[A('id')])
-    question = tables.LinkColumn('quiz_question', args=[A('id'),A('course.pk')])
+    question = tables.LinkColumn('quiz_question', args=[A('course.pk'), A('id')])
 
     class Meta:
         model = Question
