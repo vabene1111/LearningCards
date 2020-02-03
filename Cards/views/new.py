@@ -37,13 +37,14 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
         context['default_course'] = -1
         course = self.request.GET.get('course')
         if course:
-            if re.match(r'^([1-9])+$', course):
+            if re.match(r'^([0-9])+$', course):
                 if Course.objects.filter(pk=int(course)).exists():
                     context['default_course'] = int(course)
 
+        context['default_chapter'] = -1
         chapter = self.request.GET.get('chapter')
         if chapter:
-            if re.match(r'^([1-9])+$', chapter):
+            if re.match(r'^([0-9])+$', chapter):
                 if Chapter.objects.filter(pk=int(chapter)).exists():
                     context['default_chapter'] = int(chapter)
 
