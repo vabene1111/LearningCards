@@ -49,25 +49,35 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-graduation-cap"></i> {% trans 'Home' %}</a>
+                <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-graduation-cap"></i> {% trans 'Home' %}
+                </a>
             </li>
             {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'test_overview' %}"><i
+                            class="fas fa-file-alt"></i> {% trans 'Tests' %}</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'new_question' %}"><i
                             class="fas fa-question"></i> {% trans 'Add Question' %}</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'list_question' %}"><i
-                            class="fas fa-list-alt"></i> {% trans 'All Questions' %}</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-university"></i> {% trans 'Course Data' %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link" href="{% url 'list_question' %}"><i
+                                class="fas fa-list-alt"></i> {% trans 'Questions' %}</a>
+                        <a class="nav-link" href="{% url 'list_course' %}"><i
+                                class="fas fa-books"></i> {% trans 'Courses' %}</a>
+                        <a class="nav-link" href="{% url 'list_chapter' %}"><i
+                                class="fas fa-bookmark"></i> {% trans 'Chapters' %}</a>
+                    </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'list_course' %}"><i class="fas fa-books"></i> {% trans 'All Courses' %}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'test_overview' %}"><i class="fas fa-file-alt"></i> {% trans 'Tests' %}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'stats' %}"><i class="fas fa-chart-line"></i> {% trans 'Statistics' %}</a>
+                    <a class="nav-link" href="{% url 'stats' %}"><i
+                            class="fas fa-chart-line"></i> {% trans 'Statistics' %}</a>
                 </li>
             {% endif %}
         </ul>
@@ -83,7 +93,8 @@
 
             {% if not user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">{% trans 'Register' %} <i class="fas fa-user-plus"></i></a>
+                    <a class="nav-link" href="{% url 'register' %}">{% trans 'Register' %} <i
+                            class="fas fa-user-plus"></i></a>
                 </li>
             {% endif %}
             <li class="nav-item">
@@ -105,7 +116,7 @@
 
     {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message | safe}}
+            {{ message | safe }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

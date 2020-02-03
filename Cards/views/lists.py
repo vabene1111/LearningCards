@@ -5,8 +5,8 @@ from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
 from django.utils.translation import gettext as _
 
-from Cards.models import Question, Course
-from Cards.tables import QuestionTable, CourseTable
+from Cards.models import Question, Course, Chapter
+from Cards.tables import QuestionTable, CourseTable, ChapterTable
 
 
 @login_required
@@ -24,3 +24,10 @@ def course(request):
 
     return render(request, 'generic/list_template.html', {'title': _("Course"), 'table': table, 'create_url': 'new_course'})
 
+
+@login_required
+def chapter(request):
+    table = ChapterTable(Chapter.objects.order_by('pk').all())
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+
+    return render(request, 'generic/list_template.html', {'title': _("Chapter"), 'table': table, 'create_url': 'new_chapter'})

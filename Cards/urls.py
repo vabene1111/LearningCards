@@ -26,19 +26,23 @@ urlpatterns = [
 
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
     path('new/course/', new.CourseCreate.as_view(), name='new_course'),
+    path('new/chapter/', new.ChapterCreate.as_view(), name='new_chapter'),
 
     path('list/question', lists.question, name='list_question'),
     path('list/course', lists.course, name='list_course'),
+    path('list/chapter', lists.chapter, name='list_chapter'),
 
     path('edit/question/<int:pk>/', edit.QuestionUpdate.as_view(), name='edit_question'),
     path('edit/comment/<int:pk>/', edit.CommentUpdate.as_view(), name='edit_comment'),
     path('edit/course/<int:pk>/', edit.CourseUpdate.as_view(), name='edit_course'),
+    path('edit/chapter/<int:pk>/', edit.ChapterUpdate.as_view(), name='edit_chapter'),
 
     path('redirect/delete/<slug:name>/<int:pk>/', edit.delete_redirect, name='redirect_delete'),
 
     path('delete/recipe/<int:pk>/', edit.QuestionDelete.as_view(), name='delete_question'),
     path('delete/comment/<int:pk>/', edit.CommentDelete.as_view(), name='delete_comment'),
     path('delete/course/<int:pk>/', edit.CourseDelete.as_view(), name='delete_course'),
+    path('delete/chapter/<int:pk>/', edit.ChapterDelete.as_view(), name='delete_chapter'),
 
     path('register', views.register, name='register'),
 

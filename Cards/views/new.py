@@ -22,7 +22,10 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
         obj.save()
 
         messages.add_message(self.request, messages.SUCCESS, _('Question saved! You can view it here <a href={}>here</a>').format(reverse('edit_question', kwargs={'pk': obj.pk})))
-        return HttpResponseRedirect(reverse('new_question') + '?course=' + str(obj.course.pk))
+        url = reverse('new_question') + '?course=' + str(obj.course.pk)
+        if obj.chapter:
+            url = url + '&chapter=' + str(obj.chapter.pk)
+        return HttpResponseRedirect(url)
 
     def get_success_url(self):
         return reverse('new_question')
@@ -37,6 +40,13 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
             if re.match(r'^([1-9])+$', course):
                 if Course.objects.filter(pk=int(course)).exists():
                     context['default_course'] = int(course)
+
+        chapter = self.request.GET.get('chapter')
+        if chapter:
+            if re.match(r'^([1-9])+$', chapter):
+                if Chapter.objects.filter(pk=int(chapter)).exists():
+                    context['default_chapter'] = int(chapter)
+
         return context
 
 
@@ -57,4 +67,18 @@ class CourseCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CourseCreate, self).get_context_data(**kwargs)
         context['title'] = _("Course")
+        return context
+
+
+class ChapterCreate(LoginRequiredMixin, CreateView):
+    template_name = "generic/new_template.html"
+    model = Chapter
+    form_class = ChapterForm
+
+    def get_success_url(self):
+        return reverse('edit_chapter', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super(ChapterCreate, self).get_context_data(**kwargs)
+        context['title'] = _("Chapter")
         return context

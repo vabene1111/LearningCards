@@ -26,6 +26,15 @@ class CourseTable(tables.Table):
         fields = ('id', 'name', 'university', 'semester')
 
 
+class ChapterTable(tables.Table):
+    id = tables.LinkColumn('edit_chapter', args=[A('id')])
+
+    class Meta:
+        model = Chapter
+        template_name = 'generic/table_template.html'
+        fields = ('id', 'course', 'name')
+
+
 class TestTable(tables.Table):
     id = tables.LinkColumn('test', args=[A('id')])
     status = tables.Column(empty_values=())

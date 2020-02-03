@@ -13,6 +13,12 @@ class CourseForm(forms.ModelForm):
         fields = ('name', 'university', 'semester', 'description')
 
 
+class ChapterForm(forms.ModelForm):
+    class Meta:
+        model = Chapter
+        fields = ('name', 'course', 'description')
+
+
 class SelectCourseForm(forms.Form):
     course = forms.ModelChoiceField(queryset=Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all())
 
@@ -20,9 +26,9 @@ class SelectCourseForm(forms.Form):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ('course', 'question', 'answer')
+        fields = ('course', 'chapter', 'question', 'answer')
 
-        help_texts={
+        help_texts = {
             'question': _('Question and answer both support <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a> for formatting. ')
         }
 
@@ -50,4 +56,3 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "password1", "password2"]
-

@@ -78,6 +78,20 @@ class CourseUpdate(LoginRequiredMixin, UpdateView):
         return context
 
 
+class ChapterUpdate(LoginRequiredMixin, UpdateView):
+    template_name = "generic/edit_template.html"
+    model = Chapter
+    form_class = ChapterForm
+
+    def get_success_url(self):
+        return reverse('edit_chapter', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super(ChapterUpdate, self).get_context_data(**kwargs)
+        context['title'] = _("Chapter")
+        return context
+
+
 # Generic Delete views
 
 def delete_redirect(request, name, pk):
@@ -114,4 +128,15 @@ class CourseDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super(CourseDelete, self).get_context_data(**kwargs)
         context['title'] = _("Course")
+        return context
+
+
+class ChapterDelete(LoginRequiredMixin, DeleteView):
+    template_name = "generic/delete_template.html"
+    model = Chapter
+    success_url = reverse_lazy('list_chapter')
+
+    def get_context_data(self, **kwargs):
+        context = super(ChapterDelete, self).get_context_data(**kwargs)
+        context['title'] = _("Chapter")
         return context
