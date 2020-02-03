@@ -30,7 +30,8 @@ def quiz_weight_debug(request, pk):
 
 def quiz(request, pk, q=None, c=None):
     course = Course.objects.get(pk=pk)
-    chapter = Chapter.objects.get(c)
+    chapter = Chapter.objects.filter(pk=c).first()
+
     if q:
         question = Question.objects.get(pk=q)
     else:
@@ -56,25 +57,36 @@ def quiz(request, pk, q=None, c=None):
         logs = None
         log_percent = None
 
-    success_url = reverse('quiz_success', args=[question.pk])
-    failure_url = reverse('quiz_fail', args=[question.pk])
+    if chapter:
+        success_url = reverse('quiz_chapter_success', args=[question.pk, c])
+        failure_url = reverse('quiz_chapter_fail', args=[question.pk, c])
+    else:
+        success_url = reverse('quiz_success', args=[question.pk])
+        failure_url = reverse('quiz_fail', args=[question.pk])
 
     return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments, 'logs': logs, 'log_percent': log_percent, 'success_url': success_url, 'failure_url': failure_url})
 
 
-def quiz_success(request, pk):
+def quiz_success(request, pk, c=None):
     question = Question.objects.get(pk=pk)
     if request.user.is_authenticated:
         finish_question(request.user, question, QuestionLog.SUCCESS)
-    return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
+
+    if c:
+        return HttpResponseRedirect(reverse('quiz_chapter', args=[question.course.pk, c]))
+    else:
+        return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
 
 
-def quiz_fail(request, pk):
+def quiz_fail(request, pk, c=None):
     question = Question.objects.get(pk=pk)
     if request.user.is_authenticated:
         finish_question(request.user, question, QuestionLog.FAIL)
 
-    return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
+    if c:
+        return HttpResponseRedirect(reverse('quiz_chapter', args=[question.course.pk, c]))
+    else:
+        return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
 
 
 @login_required
