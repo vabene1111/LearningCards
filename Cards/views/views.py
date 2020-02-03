@@ -15,7 +15,7 @@ from Cards.tables import TestTable
 
 
 def index(request):
-    courses = Course.objects.annotate(num_questions=Count('question'), num_chapters=Count('chapter')).filter(num_questions__gt=0).order_by('name').all()
+    courses = Course.objects.annotate(num_questions=Count('question', distinct=True), num_chapters=Count('chapter', distinct=True)).filter(num_questions__gt=0).order_by('name').all()
     chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).order_by('name').all()
 
     return render(request, 'index.html', {'courses': courses, 'chapters': chapters})
