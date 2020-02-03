@@ -16,8 +16,9 @@ from Cards.tables import TestTable
 
 def index(request):
     courses = Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all()
+    chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all()
 
-    return render(request, 'index.html', {'courses': courses})
+    return render(request, 'index.html', {'courses': courses, 'chapters': chapters})
 
 
 def quiz_weight_debug(request, pk):
@@ -27,19 +28,20 @@ def quiz_weight_debug(request, pk):
     return render(request, 'debug.html', {'weights': weights, 'cache': cache})
 
 
-def quiz(request, pk, q=None):
+def quiz(request, pk, q=None, c=None):
     course = Course.objects.get(pk=pk)
+    chapter = Chapter.objects.get(c)
     if q:
         question = Question.objects.get(pk=q)
     else:
-        question = get_next_question(request, pk)
+        question = get_next_question(request, pk, chapter)
 
     if q and not question:
         messages.add_message(request, messages.ERROR, _('The requested question could not be found!'))
         return HttpResponseRedirect(reverse('index'))
 
     if not question:
-        messages.add_message(request, messages.ERROR, _('There are no questions in this course yet!'))
+        messages.add_message(request, messages.ERROR, _('There are no questions in this course/chapter yet!'))
         return HttpResponseRedirect(reverse('index'))
 
     comments = Comment.objects.filter(question=question).all()

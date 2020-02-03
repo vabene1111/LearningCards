@@ -27,7 +27,7 @@ class Chapter(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.course) + ' : ' + self.name
 
 
 class Question(models.Model):

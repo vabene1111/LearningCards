@@ -24,6 +24,15 @@ class SelectCourseForm(forms.Form):
 
 
 class QuestionForm(forms.ModelForm):
+
+    def clean(self):
+        form_data = self.cleaned_data
+        if not form_data['chapter'].course == form_data['course']:
+            self._errors["chapter"] = [_('Chapter does not belong to the selected course')]
+            del form_data['chapter']
+
+        return form_data
+
     class Meta:
         model = Question
         fields = ('course', 'chapter', 'question', 'answer')

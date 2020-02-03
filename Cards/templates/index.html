@@ -30,9 +30,15 @@
 
 
     {% for c in courses %}
-    <span style="font-size: large">
-
+        <span style="font-size: large">
         <a href="{% url 'quiz' c.pk %}">{{ c }} - ({{ c.num_questions }} {% trans 'Questions' %})</a> <br/>
+            {% for ch in chapters %}
+                {% if ch.course == c %}
+                    <li>
+                    <a href="{% url 'quiz_chapter' c.pk ch.pk %}">{{ ch.name }} - ({{ ch.num_questions }} {% trans 'Questions' %})</a> <br/>
+                    </li>
+                {% endif %}
+            {% endfor %}
     </span>
 
     {% endfor %}

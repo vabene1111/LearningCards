@@ -7,8 +7,11 @@ from django.utils import timezone
 from Cards.models import Question, QuestionLog, QuestionCache
 
 
-def get_weighted_questions(request, course):
-    questions = Question.objects.filter(course=course).annotate(weight=Value(0, output_field=IntegerField()), note=Value("", output_field=CharField())).all()
+def get_weighted_questions(request, course, chapter=None):
+    if chapter:
+        questions = Question.objects.filter(course=course, chapter=chapter).annotate(weight=Value(0, output_field=IntegerField()), note=Value("", output_field=CharField())).all()
+    else:
+        questions = Question.objects.filter(course=course).annotate(weight=Value(0, output_field=IntegerField()), note=Value("", output_field=CharField())).all()
 
     question_list = list(questions.values())
 
@@ -62,8 +65,8 @@ def add_cache_entry(user, question):
     cache_entry.save()
 
 
-def build_question_cache(request, course_id):
-    weights = get_weighted_questions(request, course_id)
+def build_question_cache(request, course_id, chapter=None):
+    weights = get_weighted_questions(request, course_id, chapter)
 
     for i, q in enumerate(weights):
         if i > 4:
@@ -71,9 +74,7 @@ def build_question_cache(request, course_id):
         question = Question.objects.get(id=q['id'])
         add_cache_entry(request.user, question)
 
-    if len(weights) > 2:
-        question = Question.objects.get(id=random.choice(weights[:len(weights) // 2])['id'])
-        add_cache_entry(request.user, question)
+    # TODO re-add random question
 
 
 def remove_cache_entry(user, question):
@@ -82,18 +83,28 @@ def remove_cache_entry(user, question):
         entry.delete()
 
 
-def get_next_question(request, course_id):
+def get_next_question(request, course_id, chapter=None):
     if not request.user.is_authenticated:
-        return Question.objects.filter(course=course_id).order_by("?").first()
+        if chapter:
+            return Question.objects.filter(course=course_id, chapter=chapter).order_by("?").first()
+        else:
+            return Question.objects.filter(course=course_id).order_by("?").first()
 
-    cache = QuestionCache.objects.filter(user=request.user, question__course__id=course_id).all()
-    if len(cache) < 2:
-        build_question_cache(request, course_id)
+    if chapter:
+        cache = QuestionCache.objects.filter(user=request.user, question__course__id=course_id, question__chapter=chapter).all()
+        if len(cache) < 2:
+            build_question_cache(request, course_id, chapter)
+    else:
+        cache = QuestionCache.objects.filter(user=request.user, question__course__id=course_id).all()
+        if len(cache) < 2:
+            build_question_cache(request, course_id)
 
     cache_entry = cache.first()
     if not cache_entry:
-        print("No cache found for user, resorting to random question")
-        return Question.objects.filter(course=course_id).order_by("?").first()
+        if chapter:
+            return Question.objects.filter(course=course_id, chapter=chapter).order_by("?").first()
+        else:
+            return Question.objects.filter(course=course_id).order_by("?").first()
 
     return cache_entry.question
 
