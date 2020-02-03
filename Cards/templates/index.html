@@ -29,19 +29,45 @@
     <br/>
 
 
-    {% for c in courses %}
-        <span style="font-size: large">
-        <a href="{% url 'quiz' c.pk %}">{{ c }} - ({{ c.num_questions }} {% trans 'Questions' %})</a> <br/>
-            {% for ch in chapters %}
-                {% if ch.course == c %}
-                    <li>
-                    <a href="{% url 'quiz_chapter' c.pk ch.pk %}">{{ ch.name }} - ({{ ch.num_questions }} {% trans 'Questions' %})</a> <br/>
-                    </li>
-                {% endif %}
-            {% endfor %}
-    </span>
+    <div class="row">
+        
+        <div class="col col-md-6">
+            <ul class="list-group list-group-flush">
+                {% for c in courses %}
 
-    {% endfor %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col col-11">
+                                <a href="{% url 'quiz' c.pk %}">{{ c }}</a>
+                            </div>
+                            <div class="col col-1">
+                               <span style="text-align: center; horiz-align: center"
+                                     class="badge badge-primary badge-pill">{{ c.num_questions }}</span>
+                            </div>
+                        </div>
+
+                        {% if c.num_chapters > 0 %}
+                            {% for ch in chapters %}
+                                {% if ch.course == c %}
+                                    <div class="row">
+                                        <div class="col col-11">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<a
+                                                href="{% url 'quiz_chapter' c.pk ch.pk %}">{{ ch.name }}</a>
+                                        </div>
+
+                                        <div class="col col-1">
+                                            <span class="badge badge-primary badge-pill">{{ ch.num_questions }}</span>
+                                        </div>
+
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 
 
