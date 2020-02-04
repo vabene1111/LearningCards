@@ -35,7 +35,7 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ('course', 'chapter', 'question', 'answer')
+        fields = ('course', 'chapter', 'question', 'answer', 'source')
 
         help_texts = {
             'question': _('Question and answer both support <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a> for formatting. ')

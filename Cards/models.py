@@ -35,6 +35,7 @@ class Question(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.PROTECT, blank=True, null=True)
     question = models.TextField()
     answer = models.TextField()
+    source = models.CharField(max_length=256, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
