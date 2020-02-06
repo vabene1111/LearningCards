@@ -42,13 +42,13 @@
                     </div>
                 </div>
 
-                <span style="font-size: large;padding-top: 1vh ;padding-right: 4vw ;padding-left: 4vw ; background-color: #222222"
+                <span style="font-size: large;padding-top: 1vh ;padding-right: 8px;padding-left: 8px; background-color: #222222"
                       class="rounded">
                         {{ question.answer | markdown | safe }}
                     </span>
 
                 {% if question.source %}
-                    <div class="row text-center">
+                    <div class="row text-center" style="margin-top: 8px">
                         <div class="col-12 pull-right" style="text-align: right">
                             <span class="text-muted"><i class="fas fa-search"></i> {{ question.source }}</span>
                         </div>
