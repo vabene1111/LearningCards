@@ -7,17 +7,18 @@
 
     <h2><i class="fas fa-graduation-cap"></i> {% trans 'Learning Cards' %}</h2>
     <br/><br/>
-    {% if not user.is_authenticated %}
-        <div class="alert alert-warning" role="alert">
-            {% blocktrans %}
-                In order to save learning progress you need to create a account!
-            {% endblocktrans %}
-        </div>
-    {% endif %}
-
 
     <div class="row">
         <div class="col col-lg-6 col-12">
+
+            {% if not user.is_authenticated %}
+                <div class="alert alert-warning" role="alert">
+                    {% blocktrans %}
+                        In order to save learning progress you need to create a account!
+                    {% endblocktrans %}
+                </div>
+            {% endif %}
+
             {% blocktrans %}
                 <b>Welcome to Learning Cards online!</b> <br/><br/>
                 The concept of this site is simple:
@@ -36,8 +37,10 @@
 
             <h4><i class="fab fa-github"></i> {% trans 'Open Soruce' %}</h4>
             {% blocktrans %}
-                This application is FOSS (Free Open Source Software) licensed under the <a href="https://github.com/vabene1111/LearningCards/blob/master/LICENSE.md" target="_blank">MIT License</a>.
-                It can be found on <a target="_blank" href="https://github.com/vabene1111/LearningCards">GitHub</a>
+                This application is FOSS (Free Open Source Software) licensed under the
+                <a href="https://github.com/vabene1111/LearningCards/blob/master/LICENSE.md" target="_blank">MIT
+                    License</a>.
+                It can be found on <a target="_blank" href="https://github.com/vabene1111/LearningCards">GitHub</a>.
             {% endblocktrans %}
             <br/>
             <br/>
