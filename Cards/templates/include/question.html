@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <span style="font-size: large;padding-top: 1vh ;padding-right: 3vw ; background-color: #222222"
+                <span style="font-size: large;padding-top: 1vh ;padding-right: 4vw ;padding-left: 4vw ; background-color: #222222"
                       class="rounded">
                         {{ question.answer | markdown | safe }}
                     </span>
@@ -50,7 +50,7 @@
                 {% if question.source %}
                     <div class="row text-center">
                         <div class="col-12 pull-right" style="text-align: right">
-                            <span class="text-muted">{% trans 'Source' %}: {{ question.source }}</span>
+                            <span class="text-muted"><i class="fas fa-search"></i> {{ question.source }}</span>
                         </div>
                     </div>
                 {% endif %}
