@@ -24,7 +24,7 @@ class SelectCourseForm(forms.Form):
 
 
 class QuestionForm(forms.ModelForm):
-    chapter = forms.ModelChoiceField(Chapter.objects.order_by('course', 'name'))
+    chapter = forms.ModelChoiceField(Chapter.objects.order_by('course', 'name'), required=False)
 
     def clean(self):
         form_data = self.cleaned_data
