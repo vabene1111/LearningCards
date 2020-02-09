@@ -1,5 +1,4 @@
 import django_tables2 as tables
-from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django_tables2.utils import A  # alias for Accessor
@@ -14,7 +13,7 @@ class QuestionTable(tables.Table):
     class Meta:
         model = Question
         template_name = 'generic/table_template.html'
-        fields = ('id', 'question', 'course', 'author')
+        fields = ('id', 'question', 'course', 'chapter.name', 'author')
 
 
 class CourseTable(tables.Table):

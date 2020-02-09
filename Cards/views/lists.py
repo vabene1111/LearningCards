@@ -5,16 +5,19 @@ from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
 from django.utils.translation import gettext as _
 
+from Cards.filters import QuestionFilter
 from Cards.models import Question, Course, Chapter
 from Cards.tables import QuestionTable, CourseTable, ChapterTable
 
 
 @login_required
 def question(request):
-    table = QuestionTable(Question.objects.order_by('pk').all())
+    f = QuestionFilter(request.GET, queryset=Question.objects.all().order_by('pk'))
+
+    table = QuestionTable(f.qs)
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
-    return render(request, 'generic/list_template.html', {'title': _("Questions"), 'table': table, 'create_url': 'new_question'})
+    return render(request, 'generic/list_template.html', {'title': _("Questions"), 'table': table, 'create_url': 'new_question', 'filter': f})
 
 
 @login_required
