@@ -21,10 +21,16 @@
             <h3>{{ global_stats.number_questions_played }}<small> Questions played</small></h3>
         </div>
         <div class="col col-md-4">
-            <h3>{{ global_stats.number_questions_success }} ({{ global_stats.number_questions_success_percent | floatformat }}%)<small> <i style="color:#509E2F" class="far fa-thumbs-up"></i></small></h3>
+            <h3>{{ global_stats.number_questions_success }}
+                ({{ global_stats.number_questions_success_percent | floatformat }}%)<small> <i style="color:#509E2F"
+                                                                                               class="far fa-thumbs-up"></i></small>
+            </h3>
         </div>
         <div class="col col-md-4">
-            <h3>{{ global_stats.number_questions_failure }} ({{ global_stats.number_questions_failure_percent | floatformat }}%)<small> <i style="color:#E61F1C" class="far fa-thumbs-down"></i></small></h3>
+            <h3>{{ global_stats.number_questions_failure }}
+                ({{ global_stats.number_questions_failure_percent | floatformat }}%)<small> <i style="color:#E61F1C"
+                                                                                               class="far fa-thumbs-down"></i></small>
+            </h3>
         </div>
     </div>
 
@@ -33,15 +39,27 @@
     <div class="row">
         <div class="col col-md-12">
             {{ course_form|crispy }}
-            <canvas id="myChart"></canvas>
+            <h4>{% trans 'Last (max) 7 Days' %}</h4>
+            <canvas id="id_chart_success"></canvas>
+            <h4>{% trans 'Questions per Day' %}</h4>
+            <canvas id="id_chart_all_time"></canvas>
         </div>
     </div>
 
     <script type="text/javascript">
-        function updateSuccessChart(labels, data_success, data_failure) {
+        let success_chart, all_time_chart;
 
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const chart = new Chart(ctx, {
+        function removeData(chart) {
+            if (chart !== undefined) {
+                chart.destroy();
+            }
+        }
+
+        function updateSuccessChart(labels, data_success, data_failure) {
+            removeData(success_chart);
+
+            const ctx = document.getElementById('id_chart_success').getContext('2d');
+            success_chart = new Chart(ctx, {
                 type: 'line',
 
                 data: {
@@ -49,34 +67,91 @@
                     datasets: [{
                         label: '{% trans 'Successful Questions' %}',
                         borderColor: 'rgb(80,158,47)',
+                        backgroundColor: 'rgb(80,158,47,0.2)',
                         data: data_success
                     }, {
                         label: '{% trans 'Failed Questions' %}',
                         borderColor: 'rgb(230,31,28)',
+                        backgroundColor: 'rgba(230,31,28,0.2)',
                         data: data_failure
                     }]
                 },
-                options: {}
+                options: {
+                    tooltips: {
+                        mode: "x"
+                    }
+                }
+            });
+        }
+
+        function updateAllTimeChart(labels, data_success, data_failure) {
+            removeData(all_time_chart);
+
+            const ctx = document.getElementById('id_chart_all_time').getContext('2d');
+            all_time_chart = new Chart(ctx, {
+                type: 'bar',
+
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '{% trans 'Failed Questions' %}',
+                            borderColor: 'rgb(230,31,28)',
+                            backgroundColor: 'rgba(230,31,28,0.2)',
+                            borderWidth: 1,
+                            data: data_failure
+                        },
+                        {
+                            label: '{% trans 'Successful Questions' %}',
+                            borderColor: 'rgb(80,158,47)',
+                            backgroundColor: 'rgb(80,158,47,0.2)',
+                            borderWidth: 1,
+                            data: data_success
+                        }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{stacked: true}],
+                        yAxes: [{stacked: true}]
+                    },
+                    tooltips: {
+                        mode: "x"
+                    }
+                }
             });
         }
 
         let elem = document.getElementById("id_course");
         elem.addEventListener("change", onCourseSelectionChanged);
 
+
+        function doRequest(url, callback) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    callback(this.responseText)
+                }
+            };
+
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+
         function onCourseSelectionChanged() {
             let val = $('#id_course').val();
             if (val !== "") {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        json = JSON.parse(this.responseText);
-                        updateSuccessChart(json.labels, json.data_success, json.data_failure)
-                    }
-                };
 
                 url = "{% url 'api_success_chart' 12345 %}".replace(/12345/, val);
-                xhttp.open("GET", url, true);
-                xhttp.send();
+                doRequest(url, function (responseText) {
+                    json = JSON.parse(responseText);
+                    updateSuccessChart(json.labels, json.data_success, json.data_failure)
+                });
+
+                url = "{% url 'api_all_time_chart' 12345 %}".replace(/12345/, val);
+                doRequest(url, function (responseText) {
+                    json = JSON.parse(responseText);
+                    updateAllTimeChart(json.labels, json.data_success, json.data_failure)
+                });
             }
         }
 

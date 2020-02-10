@@ -52,4 +52,5 @@ urlpatterns = [
     path('register', views.register, name='register'),
 
     path('api/success_chart/<int:pk>', api.success_chart, name='api_success_chart'),
+    path('api/all_time_chart/<int:pk>', api.all_time_chart, name='api_all_time_chart'),
 ]
