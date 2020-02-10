@@ -12,7 +12,7 @@
     <table class="table">
         {% for c in cache %}
             <tr>
-                <td><a href="{% url 'quiz_question' c.question.course_id c.question.id %}">{{ c.question }}</a></td>
+                <td><a href="{% url 'quiz_question' c.question.course_id c.question.id %}">{{ c.question }} - {{ c.question.chapter }}</a></td>
             </tr>
         {% endfor %}
     </table>

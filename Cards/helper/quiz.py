@@ -1,7 +1,7 @@
 import random
 from datetime import timedelta
 
-from django.db.models import Value, IntegerField, CharField
+from django.db.models import Value, IntegerField, CharField, Q
 from django.utils import timezone
 
 from Cards.models import Question, QuestionLog, QuestionCache
@@ -9,6 +9,7 @@ from Cards.models import Question, QuestionLog, QuestionCache
 
 def get_weighted_questions(request, course, chapter=None):
     if chapter:
+        QuestionCache.objects.filter(~Q(question__chapter=chapter)).delete()
         questions = Question.objects.filter(course=course, chapter=chapter).annotate(weight=Value(0, output_field=IntegerField()), note=Value("", output_field=CharField())).all()
     else:
         questions = Question.objects.filter(course=course).annotate(weight=Value(0, output_field=IntegerField()), note=Value("", output_field=CharField())).all()

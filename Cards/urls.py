@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('quiz/comment/<int:pk>', views.quiz_comment, name='quiz_comment'),
 
-    path('quiz/debug/<int:pk>', views.quiz_weight_debug, name='quiz_debug'),  # debugging for weighting algorithm
+    path('quiz/<int:pk>/debug/', views.quiz_weight_debug, name='quiz_debug'),  # debugging for weighting algorithm
 
     path('stats/', views.stats, name='stats'),
 
