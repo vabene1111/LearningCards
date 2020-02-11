@@ -41,12 +41,15 @@ def all_time_chart(request, pk):
 
 @login_required
 def radar_chart(request, pk):
-    log = QuestionLog.objects.filter(user=request.user, question__course__pk=pk).values('question__chapter__name').annotate(count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)), count_failure=Count('id', filter=Q(type=QuestionLog.FAIL)))
+    log = QuestionLog.objects.filter(user=request.user, question__course__pk=pk).values('question__chapter__name').annotate(count_total=Count('id'),
+                                                                                                                            count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)),
+                                                                                                                            count_failure=Count('id', filter=Q(type=QuestionLog.FAIL)))
 
     response = {'labels': [], 'data_success': [], 'data_failure': []}
     for i, e in enumerate(log):
+        percent_per_question = 100/e['count_total']
         response['labels'].append(e['question__chapter__name'])
-        response['data_success'].append(e['count_success'])
-        response['data_failure'].append(e['count_failure'])
+        response['data_success'].append(round(e['count_success'] * percent_per_question))
+        response['data_failure'].append(round(e['count_failure'] * percent_per_question))
 
     return JsonResponse(response)

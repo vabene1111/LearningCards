@@ -43,14 +43,14 @@
             <canvas id="id_chart_success"></canvas>
             <h4>{% trans 'Questions per Day' %}</h4>
             <canvas id="id_chart_all_time"></canvas>
-            <h4>{% trans 'Chapter' %}</h4>
+            <h4>{% trans 'Chapter in %' %}</h4>
             <canvas id="id_chart_radar"></canvas>
         </div>
     </div>
 
     <br/>
     <br/>
-    
+
     <script type="text/javascript">
         let success_chart, all_time_chart, radar_chart;
 
@@ -156,10 +156,12 @@
                         mode: "x"
                     },
                     scale: {
+                        showLabelBackdrop: false,
                         angleLines: {
                             display: false
                         }
-                    }
+                    },
+                     ticks: {display: false},
                 }
             });
         }
