@@ -28,9 +28,9 @@ def get_weighted_questions(request, course, chapter=None):
         if last_log:
             recent = timezone.now() - last_log.created_at
 
-            if recent.seconds < 2000:
-                q['weight'] = q['weight'] - (20 - recent.seconds / 100)
-                q['note'] = q['note'] + " -sec(" + str((20 - recent.seconds / 100)) + ')'
+            if recent.seconds < 4000:
+                q['weight'] = q['weight'] - (40 - recent.seconds / 100)
+                q['note'] = q['note'] + " -sec(" + str((40 - recent.seconds / 100)) + ')'
         else:
             q['weight'] = q['weight'] + 5
             q['note'] = q['note'] + " +none(5)"
@@ -38,11 +38,15 @@ def get_weighted_questions(request, course, chapter=None):
         log_total = QuestionLog.objects.filter(user=request.user, question_id=q['id']).all()
         for lt in log_total:
             if lt.type == QuestionLog.FAIL:
-                q['weight'] = q['weight'] + 0.5
-                q['note'] = q['note'] + " +a(0.5)"
+                q['weight'] = q['weight'] + 1
+                q['note'] = q['note'] + " +a(1)"
             else:
-                q['weight'] = q['weight'] - 0.5
-                q['note'] = q['note'] + " -a(0.5)"
+                q['weight'] = q['weight'] - 1
+                q['note'] = q['note'] + " -a(1)"
+
+        r = (random.randrange(-30, 30, 1) / 1000)
+        q['weight'] = q['weight'] + r
+        q['note'] = q['note'] + " +r(" + str(r) + ")"
 
     question_list = sorted(question_list, key=lambda i: i['weight'], reverse=True)
 
