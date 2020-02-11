@@ -64,7 +64,7 @@ def build_question_cache(request, course_id, chapter=None):
     weights = get_weighted_questions(request, course_id, chapter)
 
     for i, q in enumerate(weights):
-        if i > 4:
+        if i > 6:
             break
         question = Question.objects.get(id=q['id'])
         add_cache_entry(request.user, question)
