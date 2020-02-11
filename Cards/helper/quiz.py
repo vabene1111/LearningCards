@@ -28,22 +28,12 @@ def get_weighted_questions(request, course, chapter=None):
         if last_log:
             recent = timezone.now() - last_log.created_at
 
-            if recent.seconds < 1200:
-                q['weight'] = q['weight'] - (12 - recent.seconds / 100)
-                q['note'] = q['note'] + " -sec(" + str((12 - recent.seconds / 100)) + ')'
+            if recent.seconds < 2000:
+                q['weight'] = q['weight'] - (20 - recent.seconds / 100)
+                q['note'] = q['note'] + " -sec(" + str((20 - recent.seconds / 100)) + ')'
         else:
             q['weight'] = q['weight'] + 5
             q['note'] = q['note'] + " +none(5)"
-
-        daily = timezone.now() - timedelta(hours=6)
-        log_daily = QuestionLog.objects.filter(user=request.user, question_id=q['id'], created_at__gt=daily).all()
-        for ld in log_daily:
-            if ld.type == QuestionLog.FAIL:
-                q['weight'] = q['weight'] + 2
-                q['note'] = q['note'] + " +d(2)"
-            else:
-                q['weight'] = q['weight'] - 2
-                q['note'] = q['note'] + " -d(2)"
 
         log_total = QuestionLog.objects.filter(user=request.user, question_id=q['id']).all()
         for lt in log_total:
