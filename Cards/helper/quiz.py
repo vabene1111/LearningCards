@@ -32,8 +32,8 @@ def get_weighted_questions(request, course, chapter=None):
                 q['weight'] = q['weight'] - (40 - recent.seconds / 100)
                 q['note'] = q['note'] + " -sec(" + str((40 - recent.seconds / 100)) + ')'
             if recent.seconds > 12*60*60:
-                q['weight'] = q['weight'] + 2
-                q['note'] = q['note'] + " -t(2)"
+                q['weight'] = q['weight'] + 0.9
+                q['note'] = q['note'] + " -t(0.9)"
         else:
             q['weight'] = q['weight'] + 5
             q['note'] = q['note'] + " +none(5)"
