@@ -43,11 +43,16 @@
             <canvas id="id_chart_success"></canvas>
             <h4>{% trans 'Questions per Day' %}</h4>
             <canvas id="id_chart_all_time"></canvas>
+            <h4>{% trans 'Chapter' %}</h4>
+            <canvas id="id_chart_radar"></canvas>
         </div>
     </div>
 
+    <br/>
+    <br/>
+    
     <script type="text/javascript">
-        let success_chart, all_time_chart;
+        let success_chart, all_time_chart, radar_chart;
 
         function removeData(chart) {
             if (chart !== undefined) {
@@ -121,6 +126,44 @@
             });
         }
 
+        function updateRadarChart(labels, data_success, data_failure) {
+            removeData(radar_chart);
+
+            const ctx = document.getElementById('id_chart_radar').getContext('2d');
+            radar_chart = new Chart(ctx, {
+                type: 'radar',
+
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '{% trans 'Failed Questions' %}',
+                            borderColor: 'rgb(230,31,28)',
+                            backgroundColor: 'rgba(230,31,28,0.2)',
+                            borderWidth: 1,
+                            data: data_failure
+                        },
+                        {
+                            label: '{% trans 'Successful Questions' %}',
+                            borderColor: 'rgb(80,158,47)',
+                            backgroundColor: 'rgb(80,158,47,0.2)',
+                            borderWidth: 1,
+                            data: data_success
+                        }]
+                },
+                options: {
+                    tooltips: {
+                        mode: "x"
+                    },
+                    scale: {
+                        angleLines: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
         let elem = document.getElementById("id_course");
         elem.addEventListener("change", onCourseSelectionChanged);
 
@@ -151,6 +194,12 @@
                 doRequest(url, function (responseText) {
                     json = JSON.parse(responseText);
                     updateAllTimeChart(json.labels, json.data_success, json.data_failure)
+                });
+
+                url = "{% url 'api_radar_chart' 12345 %}".replace(/12345/, val);
+                doRequest(url, function (responseText) {
+                    json = JSON.parse(responseText);
+                    updateRadarChart(json.labels, json.data_success, json.data_failure)
                 });
             }
         }

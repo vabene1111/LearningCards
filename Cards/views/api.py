@@ -37,3 +37,16 @@ def all_time_chart(request, pk):
         'time_range').annotate(count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)), count_failure=Count('id', filter=Q(type=QuestionLog.FAIL))).order_by('time_range')
 
     return JsonResponse(make_response_dict(log, 'SHORT_DATE_FORMAT'))
+
+
+@login_required
+def radar_chart(request, pk):
+    log = QuestionLog.objects.filter(user=request.user, question__course__pk=pk).values('question__chapter__name').annotate(count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)), count_failure=Count('id', filter=Q(type=QuestionLog.FAIL)))
+
+    response = {'labels': [], 'data_success': [], 'data_failure': []}
+    for i, e in enumerate(log):
+        response['labels'].append(e['question__chapter__name'])
+        response['data_success'].append(e['count_success'])
+        response['data_failure'].append(e['count_failure'])
+
+    return JsonResponse(response)
