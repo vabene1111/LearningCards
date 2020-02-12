@@ -48,7 +48,7 @@ def quiz(request, pk, q=None, c=None):
     comments = Comment.objects.filter(question=question).all()
 
     if request.user.is_authenticated:
-        logs = QuestionLog.objects.filter(question=question, user=request.user).all()
+        logs = QuestionLog.objects.filter(question=question, user=request.user).order_by('created_at').all()
         if len(logs) > 0:
             log_percent = 100 / len(logs)
         else:
@@ -166,7 +166,7 @@ def test(request, pk):
 
     comments = Comment.objects.filter(question=tq.question).all()
 
-    logs = QuestionLog.objects.filter(question=tq.question, user=request.user).all()
+    logs = QuestionLog.objects.filter(question=tq.question, user=request.user).order_by('created_at').all()
     if len(logs) > 0:
         log_percent = 100 / len(logs)
     else:
