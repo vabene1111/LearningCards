@@ -22,6 +22,8 @@ def get_weighted_questions(request, course, chapter=None):
     if not request.user.is_authenticated:
         return question_list
 
+    random_buff = False
+
     for q in question_list:
 
         last_log = QuestionLog.objects.filter(user=request.user, question_id=q['id']).all().last()
@@ -32,8 +34,13 @@ def get_weighted_questions(request, course, chapter=None):
                 q['weight'] = q['weight'] - (40 - recent.seconds / 100)
                 q['note'] = q['note'] + " -sec(" + str((40 - recent.seconds / 100)) + ')'
             if recent.seconds > 12*60*60:
-                q['weight'] = q['weight'] + 0.9
-                q['note'] = q['note'] + " -t(0.9)"
+                t = 0.9
+                # randomly buff an older question to prevent forgetting it
+                if not random_buff and random.random() < 0.25:
+                    t = 10
+                    random_buff = True
+                q['weight'] = q['weight'] + t
+                q['note'] = q['note'] + f" +t({t})"
         else:
             q['weight'] = q['weight'] + 5
             q['note'] = q['note'] + " +none(5)"
@@ -71,8 +78,6 @@ def build_question_cache(request, course_id, chapter=None):
             break
         question = Question.objects.get(id=q['id'])
         add_cache_entry(request.user, question)
-
-    # TODO re-add random question
 
 
 def remove_cache_entry(user, question):
