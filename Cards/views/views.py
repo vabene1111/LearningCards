@@ -114,8 +114,12 @@ def stats(request):
     global_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
     global_stats['number_questions_success'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.SUCCESS).count()
     global_stats['number_questions_failure'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.FAIL).count()
-    global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_success']
-    global_stats['number_questions_failure_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_failure']
+    if global_stats['number_questions_played'] > 0 and global_stats['number_questions_played'] > 0:
+        global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_success']
+        global_stats['number_questions_failure_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_failure']
+    else:
+        global_stats['number_questions_success_percent'] = 100
+        global_stats['number_questions_failure_percent'] = 100
 
     course_form = SelectCourseForm()
 
