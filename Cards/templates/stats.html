@@ -278,7 +278,12 @@
                 },
                 options: {
                     tooltips: {
-                        mode: "x"
+                        mode: "nearest",
+                        callbacks: {
+                            label: function (item, data) {
+                                return '{% trans 'Chapter' %}: ' + data.labels[item.datasetIndex] + ', ' + data.datasets[item.datasetIndex].label + ': ' + item.value + '%'
+                            }
+                        }
                     },
                     scale: {
                         showLabelBackdrop: false,
@@ -286,7 +291,7 @@
                             display: false
                         }
                     },
-                    ticks: {display: false},
+                    ticks: {display: false}
                 }
             });
         }
