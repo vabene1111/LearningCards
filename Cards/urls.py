@@ -51,6 +51,9 @@ urlpatterns = [
 
     path('register/', views.register, name='register'),
 
+    path('api/all_time_global_chart/global/', api.all_time_global_chart, name='api_all_time_global_chart'),
+    path('api/question_course_chart/', api.question_course_chart, name='api_question_course_chart'),
+
     path('api/success_chart/<int:pk>/', api.success_chart, name='api_success_chart'),
     path('api/all_time_chart/<int:pk>/', api.all_time_chart, name='api_all_time_chart'),
     path('api/radar_chart/<int:pk>/', api.radar_chart, name='api_radar_chart'),

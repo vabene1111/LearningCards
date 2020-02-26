@@ -109,11 +109,21 @@ def quiz_comment(request, pk):
 
 @login_required
 def stats(request):
+    user_stats = {}
+    user_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
+    user_stats['number_questions_success'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.SUCCESS).count()
+    user_stats['number_questions_failure'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.FAIL).count()
+    if user_stats['number_questions_played'] > 0 and user_stats['number_questions_played'] > 0:
+        user_stats['number_questions_success_percent'] = 100 / user_stats['number_questions_played'] * user_stats['number_questions_success']
+        user_stats['number_questions_failure_percent'] = 100 / user_stats['number_questions_played'] * user_stats['number_questions_failure']
+    else:
+        user_stats['number_questions_success_percent'] = 100
+        user_stats['number_questions_failure_percent'] = 100
+
     global_stats = {}
-    global_stats['number_questions'] = Question.objects.count()
-    global_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
-    global_stats['number_questions_success'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.SUCCESS).count()
-    global_stats['number_questions_failure'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.FAIL).count()
+    global_stats['number_questions_played'] = QuestionLog.objects.count()
+    global_stats['number_questions_success'] = QuestionLog.objects.filter(type=QuestionLog.SUCCESS).count()
+    global_stats['number_questions_failure'] = QuestionLog.objects.filter(type=QuestionLog.FAIL).count()
     if global_stats['number_questions_played'] > 0 and global_stats['number_questions_played'] > 0:
         global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_success']
         global_stats['number_questions_failure_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_failure']
@@ -123,7 +133,7 @@ def stats(request):
 
     course_form = SelectCourseForm()
 
-    return render(request, "stats.html", {'global_stats': global_stats, 'course_form': course_form})
+    return render(request, "stats.html", {'user_stats': user_stats, 'global_stats': global_stats, 'course_form': course_form})
 
 
 def test_success(request, pk):

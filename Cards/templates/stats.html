@@ -13,7 +13,7 @@
 
 {% block content %}
 
-    <h2><i class="fas fa-chart-line"></i> {% trans 'Stats' %}</h2>
+    <h2><i class="fas fa-chart-line"></i> {% trans 'Global Stats' %}</h2>
     <br/>
 
     <div class="row">
@@ -30,6 +30,47 @@
             <h3>{{ global_stats.number_questions_failure }}
                 ({{ global_stats.number_questions_failure_percent | floatformat }}%)<small> <i style="color:#E61F1C"
                                                                                                class="far fa-thumbs-down"></i></small>
+            </h3>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="row">
+        <div class="col col-md-12">
+            <h4>{% trans 'Overall Questions' %}</h4>
+            <canvas id="id_all_time_global"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col col-md-12">
+            <h4>{% trans 'Questions per Course' %}</h4>
+            <canvas id="id_question_course"></canvas>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <h2><i class="fas fa-chart-line"></i> {% trans 'Personal' %}</h2>
+    <br/>
+
+    <div class="row">
+        <div class="col col-md-4">
+            <h3>{{ user_stats.number_questions_played }}<small> Questions played</small></h3>
+        </div>
+        <div class="col col-md-4">
+            <h3>{{ user_stats.number_questions_success }}
+                ({{ user_stats.number_questions_success_percent | floatformat }}%)<small> <i style="color:#509E2F"
+                                                                                             class="far fa-thumbs-up"></i></small>
+            </h3>
+        </div>
+        <div class="col col-md-4">
+            <h3>{{ user_stats.number_questions_failure }}
+                ({{ user_stats.number_questions_failure_percent | floatformat }}%)<small> <i style="color:#E61F1C"
+                                                                                             class="far fa-thumbs-down"></i></small>
             </h3>
         </div>
     </div>
@@ -58,6 +99,90 @@
             if (chart !== undefined) {
                 chart.destroy();
             }
+        }
+
+        doRequest("{% url 'api_all_time_global_chart' %}", function (responseText) {
+            json = JSON.parse(responseText);
+            updateGlobalAllTimeChart(json.labels, json.data_success, json.data_failure)
+        });
+
+        function updateGlobalAllTimeChart(labels, data_success, data_failure) {
+            removeData(all_time_chart);
+
+            const ctx = document.getElementById('id_all_time_global').getContext('2d');
+            const all_time_global_chart = new Chart(ctx, {
+                type: 'bar',
+
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '{% trans 'Failed Questions' %}',
+                            borderColor: 'rgb(230,31,28)',
+                            backgroundColor: 'rgba(230,31,28,0.2)',
+                            borderWidth: 1,
+                            data: data_failure
+                        },
+                        {
+                            label: '{% trans 'Successful Questions' %}',
+                            borderColor: 'rgb(80,158,47)',
+                            backgroundColor: 'rgb(80,158,47,0.2)',
+                            borderWidth: 1,
+                            data: data_success
+                        }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{stacked: true}],
+                        yAxes: [{stacked: true}]
+                    },
+                    tooltips: {
+                        mode: "x"
+                    }
+                }
+            });
+        }
+
+        doRequest("{% url 'api_question_course_chart' %}", function (responseText) {
+            json = JSON.parse(responseText);
+            updateQuestionCourseChart(json.labels, json.data_success, json.data_failure)
+        });
+
+        function updateQuestionCourseChart(labels, data_success, data_failure) {
+            removeData(all_time_chart);
+
+            const ctx = document.getElementById('id_question_course').getContext('2d');
+            const question_course_chart = new Chart(ctx, {
+                type: 'bar',
+
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '{% trans 'Failed Questions' %}',
+                            borderColor: 'rgb(230,31,28)',
+                            backgroundColor: 'rgba(230,31,28,0.2)',
+                            borderWidth: 1,
+                            data: data_failure
+                        },
+                        {
+                            label: '{% trans 'Successful Questions' %}',
+                            borderColor: 'rgb(80,158,47)',
+                            backgroundColor: 'rgb(80,158,47,0.2)',
+                            borderWidth: 1,
+                            data: data_success
+                        }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{stacked: true}],
+                        yAxes: [{stacked: true}]
+                    },
+                    tooltips: {
+                        mode: "x"
+                    }
+                }
+            });
         }
 
         function updateSuccessChart(labels, data_success, data_failure) {
@@ -161,7 +286,7 @@
                             display: false
                         }
                     },
-                     ticks: {display: false},
+                    ticks: {display: false},
                 }
             });
         }
