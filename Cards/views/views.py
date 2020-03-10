@@ -1,17 +1,13 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django_tables2 import RequestConfig
-from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.utils.translation import gettext as _
 
 from Cards.forms import RegisterForm, SelectCourseForm, CourseSearchForm
 from Cards.helper import course_helper
 from Cards.models import *
-from Cards.tables import UserCourseTable, CourseTable, QuestionTable
+from Cards.tables import UserCourseTable
 
 
 def index(request):
@@ -29,7 +25,14 @@ def question(request):
 
 
 def course(request, pk):
-    course = Course.objects.get(pk=pk)
+    course = get_object_or_404(Course, pk=pk)
+
+    if request.method == 'POST':
+        if request.POST['type'] == "join":
+            course.users.add(request.user)
+        elif request.POST['type'] == "leave":
+            course.users.remove(request.user)
+            course.save()
 
     if request.user.is_authenticated:
         log = QuestionLog.objects.filter(user=request.user, question__course__pk=course.pk).values(
@@ -45,13 +48,16 @@ def course(request, pk):
     else:
         response = {'labels': [], 'data_success': [], 'data_failure': []}
 
-    if not course:
-        messages.add_message(request, messages.ERROR, _('The requested question could not be found!'))
-        return HttpResponseRedirect(reverse('index'))
-
     chapters = course_helper.get_chapters(course)
-
-    return render(request, 'course.html', {'course': course, 'response': response, 'chapters': chapters})
+    if request.user.is_authenticated:
+        if Course.objects.filter(pk=pk, users=request.user).count() > 0:
+            assigned = True
+        else:
+            assigned = False
+    else:
+        assigned = False
+    return render(request, 'course.html',
+                  {'course': course, 'response': response, 'chapters': chapters, 'assigned': assigned})
 
 
 @login_required()
