@@ -7,10 +7,24 @@ from django.utils.translation import gettext as _
 from Cards.models import *
 
 
+class SelectWidget(widgets.Select):
+    class Media:
+        js = ('custom/js/form_select.js',)
+
+
+class MultiSelectWidget(widgets.SelectMultiple):
+    class Media:
+        js = ('custom/js/form_multiselect.js',)
+
+
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = ('name', 'university', 'semester', 'description')
+
+
+class CourseSearchForm(forms.Form):
+    course = forms.ModelChoiceField(queryset=Course.objects.all(), widget=SelectWidget)
 
 
 class ChapterForm(forms.ModelForm):
@@ -20,7 +34,8 @@ class ChapterForm(forms.ModelForm):
 
 
 class SelectCourseForm(forms.Form):
-    course = forms.ModelChoiceField(queryset=Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all())
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all())
 
 
 class QuestionForm(forms.ModelForm):
@@ -39,7 +54,8 @@ class QuestionForm(forms.ModelForm):
         fields = ('course', 'chapter', 'question', 'answer', 'source')
 
         help_texts = {
-            'question': _('Question and answer both support <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a> for formatting. ')
+            'question': _(
+                'Question and answer both support <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a> for formatting. ')
         }
 
 

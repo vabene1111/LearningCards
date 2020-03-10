@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('settings/', views.settings, name='settings'),
 
     path('quiz/<int:pk>/', views.quiz, name='quiz'),
     path('quiz/<int:pk>/q/<int:q>/', views.quiz, name='quiz_question'),
@@ -57,4 +58,6 @@ urlpatterns = [
     path('api/success_chart/<int:pk>/', api.success_chart, name='api_success_chart'),
     path('api/all_time_chart/<int:pk>/', api.all_time_chart, name='api_all_time_chart'),
     path('api/radar_chart/<int:pk>/', api.radar_chart, name='api_radar_chart'),
+
+    path('dal/keyword/', dal.CourseAutocomplete.as_view(), name='dal_course'),
 ]

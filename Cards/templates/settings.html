@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load l10n %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+
+{% block title %}{% trans 'Setting' %}{% endblock %}
+
+{% block extra_head %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">{% trans 'Join Course' %}</button>
+    </form>
+
+{% endblock %}

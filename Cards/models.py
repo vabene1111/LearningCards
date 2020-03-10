@@ -16,6 +16,7 @@ class Course(models.Model):
     semester = models.CharField(max_length=128, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+    users = models.ManyToManyField(User, related_name='course_users')
 
     def __str__(self):
         return self.name

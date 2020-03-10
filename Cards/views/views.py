@@ -8,17 +8,34 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django_tables2 import RequestConfig
 
-from Cards.forms import CommentForm, RegisterForm, SelectCourseForm
-from Cards.helper import finish_question, get_next_question, get_weighted_questions, create_new_test, finish_test_question
+from Cards.forms import CommentForm, RegisterForm, SelectCourseForm, CourseSearchForm
+from Cards.helper import finish_question, get_next_question, get_weighted_questions, create_new_test, \
+    finish_test_question
 from Cards.models import *
 from Cards.tables import TestTable
 
 
 def index(request):
-    courses = Course.objects.annotate(num_questions=Count('question', distinct=True), num_chapters=Count('chapter', distinct=True)).filter(num_questions__gt=0).order_by('name').all()
-    chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).order_by('name').all()
+    courses = Course.objects.annotate(num_questions=Count('question', distinct=True),
+                                      num_chapters=Count('chapter', distinct=True)).filter(
+        num_questions__gt=0).order_by('name').all()
+    chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).order_by(
+        'name').all()
 
     return render(request, 'index.html', {'courses': courses, 'chapters': chapters})
+
+
+@login_required()
+def settings(request):
+    if request.method == 'POST':
+        form = CourseSearchForm(request.POST)
+        if form.is_valid():
+            course = form.cleaned_data['course']
+            course.users.add(request.user)
+            course.save()
+
+    form = CourseSearchForm()
+    return render(request, 'settings.html', {'form': form})
 
 
 def quiz_weight_debug(request, pk):
@@ -64,7 +81,9 @@ def quiz(request, pk, q=None, c=None):
         success_url = reverse('quiz_success', args=[question.pk])
         failure_url = reverse('quiz_fail', args=[question.pk])
 
-    return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments, 'logs': logs, 'log_percent': log_percent, 'success_url': success_url, 'failure_url': failure_url})
+    return render(request, 'quiz.html', {'question': question, 'course': course, 'comments': comments, 'logs': logs,
+                                         'log_percent': log_percent, 'success_url': success_url,
+                                         'failure_url': failure_url})
 
 
 def quiz_success(request, pk, c=None):
@@ -102,7 +121,8 @@ def quiz_comment(request, pk):
 
             comment.save()
         else:
-            messages.add_message(request, messages.ERROR, _('There was an error saving your comment!') + str(comment_form.errors))
+            messages.add_message(request, messages.ERROR,
+                                 _('There was an error saving your comment!') + str(comment_form.errors))
 
     return HttpResponseRedirect(reverse('quiz', args=[question.course.pk]))
 
@@ -111,11 +131,15 @@ def quiz_comment(request, pk):
 def stats(request):
     user_stats = {}
     user_stats['number_questions_played'] = QuestionLog.objects.filter(user=request.user).count()
-    user_stats['number_questions_success'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.SUCCESS).count()
-    user_stats['number_questions_failure'] = QuestionLog.objects.filter(user=request.user, type=QuestionLog.FAIL).count()
+    user_stats['number_questions_success'] = QuestionLog.objects.filter(user=request.user,
+                                                                        type=QuestionLog.SUCCESS).count()
+    user_stats['number_questions_failure'] = QuestionLog.objects.filter(user=request.user,
+                                                                        type=QuestionLog.FAIL).count()
     if user_stats['number_questions_played'] > 0 and user_stats['number_questions_played'] > 0:
-        user_stats['number_questions_success_percent'] = 100 / user_stats['number_questions_played'] * user_stats['number_questions_success']
-        user_stats['number_questions_failure_percent'] = 100 / user_stats['number_questions_played'] * user_stats['number_questions_failure']
+        user_stats['number_questions_success_percent'] = 100 / user_stats['number_questions_played'] * user_stats[
+            'number_questions_success']
+        user_stats['number_questions_failure_percent'] = 100 / user_stats['number_questions_played'] * user_stats[
+            'number_questions_failure']
     else:
         user_stats['number_questions_success_percent'] = 100
         user_stats['number_questions_failure_percent'] = 100
@@ -125,15 +149,18 @@ def stats(request):
     global_stats['number_questions_success'] = QuestionLog.objects.filter(type=QuestionLog.SUCCESS).count()
     global_stats['number_questions_failure'] = QuestionLog.objects.filter(type=QuestionLog.FAIL).count()
     if global_stats['number_questions_played'] > 0 and global_stats['number_questions_played'] > 0:
-        global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_success']
-        global_stats['number_questions_failure_percent'] = 100 / global_stats['number_questions_played'] * global_stats['number_questions_failure']
+        global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats[
+            'number_questions_success']
+        global_stats['number_questions_failure_percent'] = 100 / global_stats['number_questions_played'] * global_stats[
+            'number_questions_failure']
     else:
         global_stats['number_questions_success_percent'] = 100
         global_stats['number_questions_failure_percent'] = 100
 
     course_form = SelectCourseForm()
 
-    return render(request, "stats.html", {'user_stats': user_stats, 'global_stats': global_stats, 'course_form': course_form})
+    return render(request, "stats.html",
+                  {'user_stats': user_stats, 'global_stats': global_stats, 'course_form': course_form})
 
 
 def test_success(request, pk):
@@ -175,7 +202,8 @@ def test(request, pk):
     success_url = reverse('test_success', args=[tq.pk])
     failure_url = reverse('test_fail', args=[tq.pk])
 
-    test_progress = {'questions': TestQuestion.objects.filter(test=test).count(), 'questions_done': TestQuestion.objects.filter(test=test, type__isnull=False).count()}
+    test_progress = {'questions': TestQuestion.objects.filter(test=test).count(),
+                     'questions_done': TestQuestion.objects.filter(test=test, type__isnull=False).count()}
     test_progress['questions_progress'] = (100 / test_progress['questions'] * test_progress['questions_done']) + 1
 
     comments = Comment.objects.filter(question=tq.question).all()
@@ -186,7 +214,9 @@ def test(request, pk):
     else:
         log_percent = 100
 
-    return render(request, "test.html", {'question': tq.question, 'test': test, 'test_progress': test_progress, 'comments': comments, 'logs': logs, 'log_percent': log_percent, 'success_url': success_url, 'failure_url': failure_url})
+    return render(request, "test.html",
+                  {'question': tq.question, 'test': test, 'test_progress': test_progress, 'comments': comments,
+                   'logs': logs, 'log_percent': log_percent, 'success_url': success_url, 'failure_url': failure_url})
 
 
 @login_required
@@ -209,7 +239,8 @@ def test_stats(request, pk):
     failed_questions = TestQuestion.objects.filter(test=test, type=QuestionLog.FAIL)
     successfull_questions = TestQuestion.objects.filter(test=test, type=QuestionLog.SUCCESS)
 
-    return render(request, "test_stats.html", {'test': test, 'failed_questions': failed_questions, 'successfull_questions': successfull_questions})
+    return render(request, "test_stats.html",
+                  {'test': test, 'failed_questions': failed_questions, 'successfull_questions': successfull_questions})
 
 
 @login_required
