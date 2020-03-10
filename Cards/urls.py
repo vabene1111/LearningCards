@@ -6,29 +6,29 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('settings/', views.settings, name='settings'),
 
-    path('quiz/<int:pk>/', views.quiz, name='quiz'),
-    path('quiz/<int:pk>/q/<int:q>/', views.quiz, name='quiz_question'),
-    path('quiz/<int:pk>/c/<int:c>/', views.quiz, name='quiz_chapter'),
+    path('quiz/<int:pk>/', questions.quiz, name='quiz'),
+    path('quiz/<int:pk>/q/<int:q>/', questions.quiz, name='quiz_question'),
+    path('quiz/<int:pk>/c/<int:c>/', questions.quiz, name='quiz_chapter'),
 
-    path('quiz/s/<int:pk>/', views.quiz_success, name='quiz_success'),
-    path('quiz/f/<int:pk>/', views.quiz_fail, name='quiz_fail'),
+    path('quiz/s/<int:pk>/', questions.quiz_success, name='quiz_success'),
+    path('quiz/f/<int:pk>/', questions.quiz_fail, name='quiz_fail'),
 
-    path('quiz/s/<int:pk>/c/<int:c>/', views.quiz_success, name='quiz_chapter_success'),
-    path('quiz/f/<int:pk>/c/<int:c>/', views.quiz_fail, name='quiz_chapter_fail'),
+    path('quiz/s/<int:pk>/c/<int:c>/', questions.quiz_success, name='quiz_chapter_success'),
+    path('quiz/f/<int:pk>/c/<int:c>/', questions.quiz_fail, name='quiz_chapter_fail'),
 
-    path('quiz/comment/<int:pk>/', views.quiz_comment, name='quiz_comment'),
+    path('quiz/comment/<int:pk>/', questions.quiz_comment, name='quiz_comment'),
 
-    path('quiz/<int:pk>/debug/', views.quiz_weight_debug, name='quiz_debug'),  # debugging for weighting algorithm
+    path('quiz/<int:pk>/debug/', questions.quiz_weight_debug, name='quiz_debug'),  # debugging for weighting algorithm
 
     path('stats/', views.stats, name='stats'),
 
-    path('test/overview/', views.test_overview, name='test_overview'),
-    path('test/start/<int:pk>/', views.test_start, name='test_start'),
-    path('test/stats/<int:pk>/', views.test_stats, name='test_stats'),
+    path('test/overview/', tests.test_overview, name='test_overview'),
+    path('test/start/<int:pk>/', tests.test_start, name='test_start'),
+    path('test/stats/<int:pk>/', tests.test_stats, name='test_stats'),
 
-    path('test/<int:pk>/', views.test, name='test'),
-    path('test/s/<int:pk>/', views.test_success, name='test_success'),
-    path('test/f/<int:pk>/', views.test_fail, name='test_fail'),
+    path('test/<int:pk>/', tests.test, name='test'),
+    path('test/s/<int:pk>/', tests.test_success, name='test_success'),
+    path('test/f/<int:pk>/', tests.test_fail, name='test_fail'),
 
     path('new/question/', new.QuestionCreate.as_view(), name='new_question'),
     path('new/course/', new.CourseCreate.as_view(), name='new_course'),

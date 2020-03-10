@@ -1,2 +1,2 @@
-from Cards.helper.quiz import *
-from Cards.helper.test import *
+from Cards.helper.quiz_helper import *
+from Cards.helper.test_helper import *
