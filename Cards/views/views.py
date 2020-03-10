@@ -12,7 +12,7 @@ from Cards.forms import CommentForm, RegisterForm, SelectCourseForm, CourseSearc
 from Cards.helper import finish_question, get_next_question, get_weighted_questions, create_new_test, \
     finish_test_question
 from Cards.models import *
-from Cards.tables import TestTable
+from Cards.tables import TestTable, UserCourseTable
 
 
 def index(request):
@@ -35,7 +35,11 @@ def settings(request):
             course.save()
 
     form = CourseSearchForm()
-    return render(request, 'settings.html', {'form': form})
+
+    table = UserCourseTable(Course.objects.order_by('pk').filter(users=request.user).all())
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+
+    return render(request, 'settings.html', {'form': form, 'table': table})
 
 
 def quiz_weight_debug(request, pk):
