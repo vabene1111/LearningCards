@@ -7,7 +7,135 @@
 
 {% block title %}{% trans 'Course' %}{% endblock %}
 
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"
+            integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block content %}
 
+    <div class="row">
+        <div class="col-md-6">
+            <h3>{{ course }}</h3>
+            <hr>
+            <label class="text-muted">{% trans 'University' %}</label>
+            <h4>{{ course.university }}</h4>
+            <label class="text-muted">{% trans 'Semester' %}</label>
+            <h4>{{ course.semester }}</h4>
+            {% if course.created_by %}
+                <label class="text-muted">{% trans 'Created By' %}</label>
+                <h4>{{ course.created_by }}</h4>
+            {% endif %}
+            {% if course.description %}
+                <label class="text-muted">{% trans 'Description' %}</label>
+                {{ course.description | markdown | safe }}
+            {% endif %}
+        </div>
+        {% if request.user.is_authenticated %}
+            <div class="col-md-6">
+                <h3>{% trans 'Chapter in %' %}</h3>
+                <canvas id="id_chart_radar"></canvas>
+            </div>
+        {% endif %}
+    </div>
+    <hr>
+    <h3>{% trans 'Chapters' %}</h3>
+    <div id="accordion">
+        {% for x, ch in chapters.items %}
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ x }}"
+                                aria-expanded="true" aria-controls="collapse{{ x }}">
+                            {{ ch.name }}
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapse{{ x }}" class="collapse" aria-labelledby="heading{{ x }}"
+                     data-parent="#accordion">
+                    <div class="card-body">
+                        {% render_table ch.table %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <br>
+
+    {% if request.user.is_authenticated %}
+        <script type="text/javascript">
+            let radar_chart;
+
+            function removeData(chart) {
+                if (chart !== undefined) {
+                    chart.destroy();
+                }
+            }
+
+            function doRequest(url, callback) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        callback(this.responseText)
+                    }
+                };
+
+                xhttp.open("GET", url, true);
+                xhttp.send();
+            }
+
+            url = "{% url 'api_radar_chart' course.id %}";
+            doRequest(url, function (responseText) {
+                json = JSON.parse(responseText);
+                updateRadarChart(json.labels, json.data_success, json.data_failure)
+            });
+
+            function updateRadarChart(labels, data_success, data_failure) {
+                removeData(radar_chart);
+
+                const ctx = document.getElementById('id_chart_radar').getContext('2d');
+                radar_chart = new Chart(ctx, {
+                    type: 'radar',
+
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: '{% trans 'Failed Questions' %}',
+                                borderColor: 'rgb(230,31,28)',
+                                backgroundColor: 'rgba(230,31,28,0.2)',
+                                borderWidth: 1,
+                                data: data_failure
+                            },
+                            {
+                                label: '{% trans 'Successful Questions' %}',
+                                borderColor: 'rgb(80,158,47)',
+                                backgroundColor: 'rgb(80,158,47,0.2)',
+                                borderWidth: 1,
+                                data: data_success
+                            }]
+                    },
+                    options: {
+                        tooltips: {
+                            mode: "nearest",
+                            callbacks: {
+                                label: function (item, data) {
+                                    return '{% trans 'Chapter' %}: ' + data.labels[item.datasetIndex] + ', ' + data.datasets[item.datasetIndex].label + ': ' + item.value + '%'
+                                }
+                            }
+                        },
+                        scale: {
+                            showLabelBackdrop: false,
+                            angleLines: {
+                                display: false
+                            }
+                        },
+                        ticks: {display: false}
+                    }
+                });
+            }
+        </script>
+    {% endif %}
 
 {% endblock %}

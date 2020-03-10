@@ -1,12 +1,16 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import render, redirect
 from django_tables2 import RequestConfig
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from Cards.forms import RegisterForm, SelectCourseForm, CourseSearchForm
 from Cards.models import *
-from Cards.tables import UserCourseTable
+from Cards.tables import UserCourseTable, CourseTable, QuestionTable
 
 
 def index(request):
@@ -23,8 +27,42 @@ def question(request):
     return render(request, 'question.html', {})
 
 
-def course(request):
-    return render(request, 'course.html', {})
+def course(request, pk):
+    course = Course.objects.get(pk=pk)
+
+    if request.user.is_authenticated:
+        log = QuestionLog.objects.filter(user=request.user, question__course__pk=course.pk).values(
+            'question__chapter__name').annotate(count_total=Count('id'),
+                                                count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)),
+                                                count_failure=Count('id', filter=Q(type=QuestionLog.FAIL)))
+        response = {'labels': [], 'data_success': [], 'data_failure': []}
+        for i, e in enumerate(log):
+            percent_per_question = 100 / e['count_total']
+            response['labels'].append(e['question__chapter__name'])
+            response['data_success'].append(round(e['count_success'] * percent_per_question))
+            response['data_failure'].append(round(e['count_failure'] * percent_per_question))
+    else:
+        response = {'labels': [], 'data_success': [], 'data_failure': []}
+
+    if not course:
+        messages.add_message(request, messages.ERROR, _('The requested question could not be found!'))
+        return HttpResponseRedirect(reverse('index'))
+
+    chapters = {}
+
+    for ch in course.chapter_set.all():
+        chapters[ch.pk] = {
+            'name': ch.name,
+            'table': QuestionTable(Question.objects.filter(chapter=ch).order_by('pk').all())
+        }
+
+    if Question.objects.filter(chapter=None, course=course).order_by('pk').all().count() > 0:
+        chapters['No_Chapter'] = {
+            'name': _("No Chapter"),
+            'table': QuestionTable(Question.objects.filter(chapter=None, course=course).order_by('pk').all())
+        }
+
+    return render(request, 'course.html', {'course': course, 'response': response, 'chapters': chapters})
 
 
 @login_required()
