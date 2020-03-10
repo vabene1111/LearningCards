@@ -1,5 +1,4 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.shortcuts import render, redirect
@@ -18,6 +17,14 @@ def index(request):
         'name').all()
 
     return render(request, 'index.html', {'courses': courses, 'chapters': chapters})
+
+
+def question(request):
+    return render(request, 'question.html', {})
+
+
+def course(request):
+    return render(request, 'course.html', {})
 
 
 @login_required()
