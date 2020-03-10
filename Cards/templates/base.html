@@ -95,16 +95,7 @@
         <ul class="navbar-nav">
 
 
-            {% if not user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">{% trans 'Register' %} <i
-                            class="fas fa-user-plus"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">{% trans 'Login' %} <i class="fas fa-sign-in-alt"></i></a>
-                </li>
-            {% else %}
-
+            {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -124,7 +115,14 @@
                            href="{% url 'logout' %}"> <i class="fas fa-sign-out-alt"></i> {% trans 'Logout' %}</a>
                     </div>
                 </li>
-
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">{% trans 'Register' %} <i
+                            class="fas fa-user-plus"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">{% trans 'Login' %} <i class="fas fa-sign-in-alt"></i></a>
+                </li>
             {% endif %}
         </ul>
     </div>
