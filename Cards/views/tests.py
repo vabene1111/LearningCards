@@ -102,5 +102,3 @@ def test_start(request, pk):
     test = create_new_test(request.user, course)
 
     return HttpResponseRedirect(reverse('test', args=[test.pk]))
-
-

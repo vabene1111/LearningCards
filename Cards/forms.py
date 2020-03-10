@@ -60,6 +60,8 @@ class QuestionForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    return_url = forms.CharField(required=False)
+
     class Meta:
         model = Comment
         fields = ('text',)

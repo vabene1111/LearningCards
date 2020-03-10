@@ -81,7 +81,7 @@
     </div>
 
     <br/><br/>
-
+   
     <h5>{% trans 'Comments' %}</h5>
 
     {% for c in comments %}
@@ -101,6 +101,7 @@
         <div class="input-group mb-3">
             <textarea name="text" cols="15" rows="3" class="textarea form-control" required
                       id="id_text"></textarea>
+            <input name="return_url" id="return_url" value="{{ request.get_full_path }}" hidden>
             <div class="input-group-append">
                 <input type="submit" value="{% trans 'Comment' %}" class="btn btn-success">
             </div>

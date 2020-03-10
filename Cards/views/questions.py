@@ -90,8 +90,9 @@ def quiz_comment(request, pk):
             comment.question = question
             comment.text = comment_form.cleaned_data['text']
             comment.created_by = request.user
-
             comment.save()
+
+            return HttpResponseRedirect(comment_form.cleaned_data['return_url'])
         else:
             messages.add_message(request, messages.ERROR,
                                  _('There was an error saving your comment!') + str(comment_form.errors))
