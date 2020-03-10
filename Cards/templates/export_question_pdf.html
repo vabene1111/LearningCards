@@ -1,9 +1,38 @@
 {% load i18n %}
 {% load l10n %}
+{% load custom_tags %}
 
-<h1>{% trans 'Course Export' %}</h1>
+<html>
+<head>
+    <title>{{ course.name }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
 
-{% for q in questions %}
-    <h3>{{ q.question }}</h3>
-    {{ q.answer }}
+<body>
+
+<h1><u><b>{% trans 'Course Export' %} - {{ course.name }}</b></u></h1>
+<label class="text-muted">{% trans 'University' %}</label>
+<h4>{{ course.university }}</h4>
+<label class="text-muted">{% trans 'Semester' %}</label>
+<h4>{{ course.semester }}</h4>
+{% if course.created_by %}
+    <label class="text-muted">{% trans 'Created By' %}</label>
+    <h4>{{ course.created_by }}</h4>
+{% endif %}
+{% if course.description %}
+    <label class="text-muted">{% trans 'Description' %}</label>
+    {{ course.description | markdown | safe }}
+{% endif %}
+
+<br/>
+<br/>
+
+{% for key, value in chapters.items %}
+    <h2>{{ value.name }}</h2>
+    {% for q in  value.questions %}
+        <h3>{{ q.question }}</h3>
+        {{ q.answer |markdown|safe }}
+    {% endfor %}
 {% endfor %}
+</body>
+</html>
