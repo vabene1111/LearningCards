@@ -93,12 +93,6 @@
         </ul>
 
         <ul class="navbar-nav">
-            {% if user.is_staff %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}"><i
-                            class="fas fa-user-shield"></i> {% trans 'Admin' %}</a>
-                </li>
-            {% endif %}
 
 
             {% if not user.is_authenticated %}
@@ -106,16 +100,32 @@
                     <a class="nav-link" href="{% url 'register' %}">{% trans 'Register' %} <i
                             class="fas fa-user-plus"></i></a>
                 </li>
-            {% endif %}
-            <li class="nav-item">
-                {% if user.is_authenticated %}
-                    <a class="nav-link"
-                       href="{% url 'logout' %}">{% trans 'Logout' %} {{ user.first_name }} {{ user.last_name }} <i
-                            class="fas fa-sign-out-alt"></i></a>
-                {% else %}
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">{% trans 'Login' %} <i class="fas fa-sign-in-alt"></i></a>
-                {% endif %}
-            </li>
+                </li>
+            {% else %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link"
+                           href="{% url 'settings' %}"><i class="fas fa-user-cog"></i> {% trans 'Settings' %}</a>
+
+                        {% if user.is_staff %}
+                            <a class="nav-link" href="{% url 'admin:index' %}"><i
+                                    class="fas fa-user-shield"></i> {% trans 'Admin' %}</a>
+
+                        {% endif %}
+
+                        <a class="nav-link"
+                           href="{% url 'logout' %}"> <i class="fas fa-sign-out-alt"></i> {% trans 'Logout' %}</a>
+                    </div>
+                </li>
+
+            {% endif %}
         </ul>
     </div>
 </nav>
