@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from Cards.forms import RegisterForm, SelectCourseForm, CourseSearchForm
+from Cards.helper import course_helper
 from Cards.models import *
 from Cards.tables import UserCourseTable, CourseTable, QuestionTable
 
@@ -48,19 +49,7 @@ def course(request, pk):
         messages.add_message(request, messages.ERROR, _('The requested question could not be found!'))
         return HttpResponseRedirect(reverse('index'))
 
-    chapters = {}
-
-    for ch in course.chapter_set.all():
-        chapters[ch.pk] = {
-            'name': ch.name,
-            'table': QuestionTable(Question.objects.filter(chapter=ch).order_by('pk').all())
-        }
-
-    if Question.objects.filter(chapter=None, course=course).order_by('pk').all().count() > 0:
-        chapters['No_Chapter'] = {
-            'name': _("No Chapter"),
-            'table': QuestionTable(Question.objects.filter(chapter=None, course=course).order_by('pk').all())
-        }
+    chapters = course_helper.get_chapters(course)
 
     return render(request, 'course.html', {'course': course, 'response': response, 'chapters': chapters})
 

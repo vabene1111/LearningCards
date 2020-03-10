@@ -6,3 +6,4 @@ from Cards.views.edit import *
 from Cards.views.new import *
 from Cards.views.api import *
 from Cards.views.dal import *
+from Cards.views.files import *

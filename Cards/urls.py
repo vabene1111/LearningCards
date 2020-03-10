@@ -54,6 +54,8 @@ urlpatterns = [
 
     path('register/', views.register, name='register'),
 
+    path('file/export/<int:pk>/', files.export_course, name='file_export_course'),
+
     path('api/all_time_global_chart/global/', api.all_time_global_chart, name='api_all_time_global_chart'),
     path('api/question_course_chart/', api.question_course_chart, name='api_question_course_chart'),
 

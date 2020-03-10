@@ -1,0 +1,9 @@
+{% load i18n %}
+{% load l10n %}
+
+<h1>{% trans 'Course Export' %}</h1>
+
+{% for q in questions %}
+    <h3>{{ q.question }}</h3>
+    {{ q.answer }}
+{% endfor %}

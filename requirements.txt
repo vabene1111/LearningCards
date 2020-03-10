@@ -4,6 +4,7 @@ django-filter
 django-crispy-forms
 djangorestframework
 django-autocomplete-light
+xhtml2pdf
 markdown
 bleach
 bleach-whitelist
