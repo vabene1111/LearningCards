@@ -13,7 +13,7 @@ from Cards.tables import UserCourseTable
 def index(request):
     courses = Course.objects.annotate(num_questions=Count('question', distinct=True),
                                       num_chapters=Count('chapter', distinct=True)).filter(
-        num_questions__gt=0).order_by('name').all()
+        num_questions__gt=0, users=request.user).order_by('name').all()
     chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).order_by(
         'name').all()
 

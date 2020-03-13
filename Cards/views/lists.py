@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django_tables2 import RequestConfig
 from django.utils.translation import gettext as _
 
-from Cards.filters import QuestionFilter
+from Cards.filters import QuestionFilter, CourseFilter
 from Cards.models import Question, Course, Chapter
 from Cards.tables import QuestionTable, CourseTable, ChapterTable
 
@@ -17,15 +17,19 @@ def question(request):
     table = QuestionTable(f.qs)
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
-    return render(request, 'generic/list_template.html', {'title': _("Questions"), 'table': table, 'create_url': 'new_question', 'filter': f})
+    return render(request, 'generic/list_template.html',
+                  {'title': _("Questions"), 'table': table, 'create_url': 'new_question', 'filter': f})
 
 
 @login_required
 def course(request):
-    table = CourseTable(Course.objects.order_by('pk').all())
+    f = CourseFilter(request.GET, queryset=Course.objects.all().order_by('pk'))
+
+    table = CourseTable(f.qs)
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
-    return render(request, 'generic/list_template.html', {'title': _("Course"), 'table': table, 'create_url': 'new_course'})
+    return render(request, 'generic/list_template.html',
+                  {'title': _("Course"), 'table': table, 'create_url': 'new_course', 'filter': f})
 
 
 @login_required
@@ -33,4 +37,5 @@ def chapter(request):
     table = ChapterTable(Chapter.objects.order_by('pk').all())
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
-    return render(request, 'generic/list_template.html', {'title': _("Chapter"), 'table': table, 'create_url': 'new_chapter'})
+    return render(request, 'generic/list_template.html',
+                  {'title': _("Chapter"), 'table': table, 'create_url': 'new_chapter'})

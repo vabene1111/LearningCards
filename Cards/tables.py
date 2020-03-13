@@ -18,6 +18,7 @@ class QuestionTable(tables.Table):
 
 class CourseTable(tables.Table):
     id = tables.LinkColumn('edit_course', args=[A('id')])
+    name = tables.LinkColumn('course', args=[A('id')])
 
     class Meta:
         model = Course
@@ -35,12 +36,12 @@ class ChapterTable(tables.Table):
 
 
 class UserCourseTable(tables.Table):
-    id = tables.LinkColumn('edit_chapter', args=[A('id')])
+    name = tables.LinkColumn('course', args=[A('id')])
 
     class Meta:
         model = Course
         template_name = 'generic/table_template.html'
-        fields = ('id', 'name')
+        fields = ('name',)
 
 
 class TestTable(tables.Table):

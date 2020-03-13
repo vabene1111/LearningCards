@@ -10,24 +10,22 @@
 
     <h3>{{ title }} {% trans 'List' %}
 
+        {% if table.Meta.model|get_class == 'Course' %}
+            <a href="{% url 'new_course' %}"><i class="fas fa-plus-circle"></i></a>
+        {% endif %}
+        {% if table.Meta.model|get_class == 'Chapter' %}
+            <a href="{% url 'new_chapter' %}"><i class="fas fa-plus-circle"></i></a>
+        {% endif %}
+    </h3>
     {% if filter %}
         <br/>
-        <br/>
-        <form action="{% url 'list_question' %}" method="get">
-        {% csrf_token %}
-        {{ filter.form|crispy }}
+        <form method="get">
+            {% csrf_token %}
+            {{ filter.form|crispy }}
 
-        <button type="submit" class="btn btn-success">{% trans 'Filter' %}</button>
-    </form>
+            <button type="submit" class="btn btn-success">{% trans 'Filter' %}</button>
+        </form>
     {% endif %}
-
-    {% if table.Meta.model|get_class == 'Course' %}
-        <a href="{% url 'new_course' %}" ><i class="fas fa-plus-circle"></i></a>
-    {% endif %}
-    {% if table.Meta.model|get_class == 'Chapter' %}
-        <a href="{% url 'new_chapter' %}" ><i class="fas fa-plus-circle"></i></a>
-    {% endif %}
-    </h3>
     <br/>
 
     {% if table %}

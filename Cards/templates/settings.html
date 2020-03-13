@@ -13,11 +13,7 @@
 
 {% block content %}
 
-    <form action="." method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-success">{% trans 'Join Course' %}</button>
-    </form>
+    <h2>{% trans 'Your Courses' %}</h2>
 
     {% render_table table %}
 
