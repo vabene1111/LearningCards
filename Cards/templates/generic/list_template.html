@@ -22,7 +22,6 @@
         <form method="get">
             {% csrf_token %}
             {{ filter.form|crispy }}
-
             <button type="submit" class="btn btn-success">{% trans 'Filter' %}</button>
         </form>
     {% endif %}

@@ -21,7 +21,6 @@ def question(request):
                   {'title': _("Questions"), 'table': table, 'create_url': 'new_question', 'filter': f})
 
 
-@login_required
 def course(request):
     f = CourseFilter(request.GET, queryset=Course.objects.all().order_by('pk'))
 

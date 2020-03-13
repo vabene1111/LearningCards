@@ -13,7 +13,11 @@ from Cards.tables import UserCourseTable
 def index(request):
     courses = Course.objects.annotate(num_questions=Count('question', distinct=True),
                                       num_chapters=Count('chapter', distinct=True)).filter(
-        num_questions__gt=0, users=request.user).order_by('name').all()
+        num_questions__gt=0).order_by('name').all()
+
+    if request.user.is_authenticated:
+        courses.filter(users=request.user)
+
     chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).order_by(
         'name').all()
 
@@ -29,10 +33,18 @@ def course(request, pk):
 
     if request.method == 'POST':
         if request.POST['type'] == "join":
-            course.users.add(request.user)
+            if request.user.is_authenticated:
+                course.users.add(request.user)
+            else:
+                if 'courses' not in request.session:
+                    request.session['courses'] = []
+                request.session['courses'].add(course)
         elif request.POST['type'] == "leave":
-            course.users.remove(request.user)
-            course.save()
+            if request.user.is_authenticated:
+                course.users.remove(request.user)
+                course.save()
+            else:
+                request.session['courses'].remove(course)
 
     if request.user.is_authenticated:
         log = QuestionLog.objects.filter(user=request.user, question__course__pk=course.pk).values(
@@ -55,7 +67,12 @@ def course(request, pk):
         else:
             assigned = False
     else:
-        assigned = False
+        if 'courses' not in request.session:
+            request.session['courses'] = []
+        if course in request.session['course']:
+            assigned = True
+        else:
+            assigned = False
     return render(request, 'course.html',
                   {'course': course, 'response': response, 'chapters': chapters, 'assigned': assigned})
 

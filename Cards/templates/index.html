@@ -48,44 +48,49 @@
 
         <div class="col">
             <h2>{% trans 'Quizzes' %}</h2>
+            {% if request.user.is_authenticaed %}
+                <ul class="list-group list-group-flush">
+                    {% for c in courses %}
 
-            <ul class="list-group list-group-flush">
-                {% for c in courses %}
-
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col col-11">
-                                <a href="{% url 'quiz' c.pk %}">{{ c }}</a>
-                            </div>
-                            <div class="col col-1">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col col-11">
+                                    <a href="{% url 'quiz' c.pk %}">{{ c }}</a>
+                                </div>
+                                <div class="col col-1">
                                <span style="text-align: center; horiz-align: center"
                                      class="badge badge-primary badge-pill">{{ c.num_questions }}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        {% if c.num_chapters > 0 %}
-                            {% for ch in chapters %}
-                                {% if ch.course == c %}
-                                    <div class="row">
-                                        <div class="col col-11">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;<a
-                                                href="{% url 'quiz_chapter' c.pk ch.pk %}">{{ ch.name }}</a>
+                            {% if c.num_chapters > 0 %}
+                                {% for ch in chapters %}
+                                    {% if ch.course == c %}
+                                        <div class="row">
+                                            <div class="col col-11">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<a
+                                                    href="{% url 'quiz_chapter' c.pk ch.pk %}">{{ ch.name }}</a>
+                                            </div>
+                                            <div class="col col-1">
+                                                <span class="badge badge-primary badge-pill">{{ ch.num_questions }}</span>
+                                            </div>
                                         </div>
-                                        <div class="col col-1">
-                                            <span class="badge badge-primary badge-pill">{{ ch.num_questions }}</span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-            <br/>
-            <br/>
-            <div class="text-center">
-                <a href="{% url 'list_course' %}" class="btn btn-warning text-center">{% trans 'Join Course' %}</a>
-            </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <br/>
+                <br/>
+                <div class="text-center">
+                    <a href="{% url 'list_course' %}" class="btn btn-warning text-center">{% trans 'Join Course' %}</a>
+                </div>
+            {% else %}
+                <div class="text-center">
+                    <a href="{% url 'list_course' %}" class="btn btn-success text-center">{% trans 'Choose Course' %}</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 

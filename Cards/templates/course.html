@@ -20,7 +20,7 @@
             <hr>
             <form method="POST">
                 <div class="btn-group-justified">
-                    {% if request.user.is_authenticated %}
+
                         {% csrf_token %}
                         {% if not assigned %}
                             <input type="hidden" value="join" name="type">
@@ -37,12 +37,7 @@
                                     class="fas fa-sign-out"></i> {% trans 'Leave' %}
                             </button>
                         {% endif %}
-                    {% else %}
-                        <a href="{% url 'quiz' course.pk %}">
-                            <button type="button" class="btn btn-success"><i class="fas fa-play"></i> {% trans 'Play' %}
-                                </button>
-                            </a>
-                    {% endif %}
+
                 </div>
             </form>
             <hr>

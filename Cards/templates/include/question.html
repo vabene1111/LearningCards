@@ -2,8 +2,10 @@
 {% load l10n %}
 {% load custom_tags %}
 
-<h5 class="text-success"> {% trans 'Question' %} <small
-        class="text-muted">{% trans 'by' %} {{ question.author.first_name }} {{ question.author.last_name }}</small>
+<h5 class="text-success"> {% trans 'Question' %}
+    {% if request.user.is_authenticated %}
+        <small class="text-muted">{% trans 'by' %} {{ question.author.first_name }} {{ question.author.last_name }}</small>
+    {% endif %}
 </h5>
 <br/>
 <div class="row">
@@ -12,9 +14,7 @@
                 {{ question.question | markdown | safe }}
             </span>
     </div>
-
 </div>
-
 <br/>
 
 <div class="row">
@@ -87,7 +87,9 @@
     {% for c in comments %}
         <div class="card">
             <div class="card-body">
-                <small class="card-title">{{ c.updated_at }} {% trans 'by' %} {{ c.created_by.first_name }} {{ c.created_by.last_name }}</small>
+                {% if request.user.is_authenticated %}
+                    <small class="card-title">{{ c.updated_at }} {% trans 'by' %} {{ c.created_by.first_name }} {{ c.created_by.last_name }}</small>
+                {% endif %}
                 <a
                         href="{% url 'edit_comment' c.pk %}" class="d-print-none"><i
                         class="fas fa-pencil-alt"></i></a><br/>
