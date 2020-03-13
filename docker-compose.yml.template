@@ -7,8 +7,6 @@ services:
       - ./postgresql:/var/lib/postgresql/data
     env_file:
       - ./.env
-    networks:
-      - default
 
   web_quiz:
     build: .
@@ -20,8 +18,6 @@ services:
       - .:/LearningCards
     depends_on:
       - db_quiz
-    networks:
-      - default
 
   nginx_quiz:
     image: "nginx"
@@ -32,12 +28,14 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./staticfiles:/static
       - ./mediafiles:/media
-    networks:
-      - default
-      - nginx-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.quiz.rule=Host(`quiz.mydomain.com`)"
+      - "traefik.http.routers.quiz.entrypoints=web_secure"
+      - "traefik.http.routers.quiz.tls.certresolver=le_resolver"
 
 networks:
   default:
-  nginx-proxy:
     external:
-      name: nginx-proxy
+      name: traefik
+
