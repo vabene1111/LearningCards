@@ -1,0 +1,478 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-20 16:23+0200\n"
+"PO-Revision-Date: 2020-04-20 16:24+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
+
+#: .\Cards\forms.py:52
+msgid "Chapter does not belong to the selected course"
+msgstr "Das Kapitel gehört nicht zum ausgewählten Kurs"
+
+#: .\Cards\forms.py:63
+msgid ""
+"Question and answer both support <a href=\"https://daringfireball.net/"
+"projects/markdown/syntax\" target=\"_blank\">markdown</a> for formatting. "
+msgstr ""
+"Fragen und Antworten unterstützen <a href=\"https://daringfireball.net/"
+"projects/markdown/syntax\" target=\"_blank\">Markdown</a> zur Formatierung. "
+
+#: .\Cards\forms.py:78
+msgid "Add your comment: "
+msgstr "Füge einen Kommentar hinzu: "
+
+#: .\Cards\helper\course_helper.py:21 .\Cards\templates\course.html:74
+msgid "No Chapter"
+msgstr "Kein Kapitel"
+
+#: .\Cards\models.py:49
+msgid "Success"
+msgstr "Erfolg"
+
+#: .\Cards\models.py:49
+msgid "Fail"
+msgstr "Fehler"
+
+#: .\Cards\tables.py:53
+msgid "Complete"
+msgstr "Fertig"
+
+#: .\Cards\tables.py:55
+msgid "Incomplete"
+msgstr "Unfertig"
+
+#: .\Cards\templates\base.html:62
+msgid "Home"
+msgstr "Home"
+
+#: .\Cards\templates\base.html:68
+msgid "Tests"
+msgstr "Tests"
+
+#: .\Cards\templates\base.html:72
+msgid "Add Question"
+msgstr "Neue Frage"
+
+#: .\Cards\templates\base.html:77
+msgid "Course Data"
+msgstr "Kurs Daten"
+
+#: .\Cards\templates\base.html:81 .\Cards\views\lists.py:21
+msgid "Questions"
+msgstr "Fragen"
+
+#: .\Cards\templates\base.html:83
+msgid "Courses"
+msgstr "Kurse"
+
+#: .\Cards\templates\base.html:85 .\Cards\templates\course.html:64
+msgid "Chapters"
+msgstr "Kapitel"
+
+#: .\Cards\templates\base.html:90 .\Cards\templates\stats.html:7
+msgid "Statistics"
+msgstr "Statistiken"
+
+#: .\Cards\templates\base.html:104
+#: .\Cards\templates\generic\language_chooser.html:5
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: .\Cards\templates\base.html:108
+msgid "Admin"
+msgstr "Admin"
+
+#: .\Cards\templates\base.html:113
+msgid "Logout"
+msgstr "Ausloggen"
+
+#: .\Cards\templates\base.html:118
+msgid "Register"
+msgstr "Registrieren"
+
+#: .\Cards\templates\base.html:122 .\Cards\templates\registration\login.html:44
+msgid "Login"
+msgstr "Einloggen"
+
+#: .\Cards\templates\course.html:8 .\Cards\views\edit.py:77
+#: .\Cards\views\edit.py:130 .\Cards\views\lists.py:31 .\Cards\views\new.py:73
+msgid "Course"
+msgstr "Kurs"
+
+#: .\Cards\templates\course.html:28
+msgid "Join"
+msgstr "Beitreten"
+
+#: .\Cards\templates\course.html:33 .\Cards\templates\course.html:76
+msgid "Play"
+msgstr "Spielen"
+
+#: .\Cards\templates\course.html:36
+msgid "Leave"
+msgstr "Verlassen"
+
+#: .\Cards\templates\course.html:43
+#: .\Cards\templates\export_question_pdf.html:14
+msgid "University"
+msgstr "Universität"
+
+#: .\Cards\templates\course.html:45
+#: .\Cards\templates\export_question_pdf.html:16
+msgid "Semester"
+msgstr "Semester"
+
+#: .\Cards\templates\course.html:48
+#: .\Cards\templates\export_question_pdf.html:19
+msgid "Created By"
+msgstr "Erstellt von"
+
+#: .\Cards\templates\course.html:52
+#: .\Cards\templates\export_question_pdf.html:23
+msgid "Description"
+msgstr "Beschreibung"
+
+#: .\Cards\templates\course.html:58 .\Cards\templates\stats.html:87
+#, python-format
+msgid "Chapter in %%"
+msgstr "Kapitel in %%"
+
+#: .\Cards\templates\course.html:133 .\Cards\templates\stats.html:120
+#: .\Cards\templates\stats.html:162 .\Cards\templates\stats.html:203
+#: .\Cards\templates\stats.html:228 .\Cards\templates\stats.html:265
+#: .\Cards\templates\test_stats.html:29 .\Cards\templates\test_stats.html:69
+msgid "Failed Questions"
+msgstr "Falsche Fragen"
+
+#: .\Cards\templates\course.html:140 .\Cards\templates\stats.html:127
+#: .\Cards\templates\stats.html:169 .\Cards\templates\stats.html:198
+#: .\Cards\templates\stats.html:235 .\Cards\templates\stats.html:272
+msgid "Successful Questions"
+msgstr "Richtige Fragen"
+
+#: .\Cards\templates\course.html:152 .\Cards\templates\stats.html:284
+#: .\Cards\views\edit.py:91 .\Cards\views\edit.py:141 .\Cards\views\lists.py:42
+#: .\Cards\views\new.py:87
+msgid "Chapter"
+msgstr "Kapitel"
+
+#: .\Cards\templates\export_question_pdf.html:13
+msgid "Course Export"
+msgstr "Kurs Export"
+
+#: .\Cards\templates\generic\delete_template.html:5
+#: .\Cards\templates\generic\delete_template.html:13
+#: .\Cards\templates\generic\delete_template.html:21
+#: .\Cards\templates\generic\edit_template.html:24
+msgid "Delete"
+msgstr "Löschen"
+
+#: .\Cards\templates\generic\delete_template.html:18
+#, python-format
+msgid "Are you sure you want to delete the %(title)s: <b>%(object)s</b> "
+msgstr "Bist du sicher das du %(title)s: <b>%(object)s</b> löschen willst "
+
+#: .\Cards\templates\generic\delete_template.html:22
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: .\Cards\templates\generic\edit_template.html:6
+#: .\Cards\templates\generic\edit_template.html:14
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: .\Cards\templates\generic\edit_template.html:21
+#: .\Cards\templates\generic\language_chooser.html:23
+#: .\Cards\templates\generic\new_template.html:19
+#: .\Cards\templates\settings.html:36
+msgid "Save"
+msgstr "Speichern"
+
+#: .\Cards\templates\generic\edit_template.html:27
+msgid "View Question"
+msgstr "Fragen Ansehen"
+
+#: .\Cards\templates\generic\list_template.html:7
+#: .\Cards\templates\generic\list_template.html:15
+msgid "List"
+msgstr "Liste"
+
+#: .\Cards\templates\generic\list_template.html:29
+msgid "Filter"
+msgstr "Filter"
+
+#: .\Cards\templates\generic\table_template.html:76
+msgid "previous"
+msgstr "vorherige"
+
+#: .\Cards\templates\generic\table_template.html:98
+msgid "next"
+msgstr "nächste"
+
+#: .\Cards\templates\include\question.html:5 .\Cards\templates\question.html:8
+#: .\Cards\views\edit.py:31 .\Cards\views\edit.py:108 .\Cards\views\new.py:52
+msgid "Question"
+msgstr "Frage"
+
+#: .\Cards\templates\include\question.html:7
+#: .\Cards\templates\include\question.html:91
+msgid "by"
+msgstr "von"
+
+#: .\Cards\templates\include\question.html:25
+msgid "Show Answer"
+msgstr "Antwort zeigen"
+
+#: .\Cards\templates\include\question.html:36
+msgid "Answer"
+msgstr "Antwort"
+
+#: .\Cards\templates\include\question.html:68
+msgid "Question History"
+msgstr "Fragen Historie"
+
+#: .\Cards\templates\include\question.html:85
+msgid "Comments"
+msgstr "Kommentare"
+
+#: .\Cards\templates\include\question.html:108 .\Cards\views\edit.py:54
+#: .\Cards\views\edit.py:119
+msgid "Comment"
+msgstr "Kommentar"
+
+#: .\Cards\templates\index.html:4 .\Cards\templates\index.html:8
+msgid "Learning Cards"
+msgstr "Lernkarten"
+
+#: .\Cards\templates\index.html:16
+msgid ""
+"\n"
+"                        In order to save learning progress you need to "
+"create an account!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Um deinen persönlichen Lernfortschritt zu speichern "
+"musst du einen Account erstellen!\n"
+"                    "
+
+#: .\Cards\templates\index.html:22
+msgid ""
+"\n"
+"                <b>Welcome to Learning Cards online!</b> <br/><br/>\n"
+"                The concept of this site is simple:\n"
+"                <ol>\n"
+"                    <li>Select a quiz and answer the question (for yourself)!"
+"</li>\n"
+"                    <li>Look at the answer and select if you answered "
+"correctly or not</li>\n"
+"                    <li>Repeat!</li>\n"
+"                </ol>\n"
+"                The system will automatically choose relevant questions "
+"based on several factors so you can focus on\n"
+"                learning what you need to learn.  <br/><br/>\n"
+"                Everyone can (and probably should) contribute new questions "
+"so that other can benefit!\n"
+"            "
+msgstr ""
+"\n"
+"                <b>Willkommen zu Lernkarten online!</b> <br/><br/>\n"
+"                Das Konzept dieser Seite ist simpel:\n"
+"                <ol>\n"
+"                    <li>Wähle ein Quiz und beantworte die Fragen (für dich "
+"selbst)!</li>\n"
+"                    <li>Guck dir die Antwort an und wähl aus ob du die Frage "
+"richtig oder falsch beantwortet hast</li>\n"
+"                    <li>Wiederholen!</li>\n"
+"                </ol>\n"
+"                Basierend auf den vorherigen Antworten wählt das System "
+"automatisch passende Fragen damit du dich aufs lernen Konzentrieren kannst "
+"<br/><br/>\n"
+"                Jeder kann (und sollte) Fragen beitragen damit alle davon "
+"profitieren!\n"
+"            "
+
+#: .\Cards\templates\index.html:38
+msgid "Open Soruce"
+msgstr "Open Source"
+
+#: .\Cards\templates\index.html:39
+msgid ""
+"\n"
+"                This application is FOSS (Free Open Source Software) "
+"licensed under the\n"
+"                <a href=\"https://github.com/vabene1111/LearningCards/blob/"
+"master/LICENSE.md\" target=\"_blank\">MIT\n"
+"                    License</a>.\n"
+"                It can be found on <a target=\"_blank\" href=\"https://"
+"github.com/vabene1111/LearningCards\">GitHub</a>.\n"
+"            "
+msgstr ""
+"\n"
+"Diese Anwendung ist FOSS (Free Open Source Software) und steht unter der <a "
+"href=\"https://github.com/vabene1111/LearningCards/blob/master/LICENSE.md\" "
+"target=\"_blank\">MIT\n"
+"                    Lizenz</a>\n"
+" Der Source Code befindet sich auf <a target=\"_blank\" href=\"https://"
+"github.com/vabene1111/LearningCards\">GitHub</a>.\n"
+"      "
+
+#: .\Cards\templates\index.html:50
+msgid "Quizzes"
+msgstr "Quizzes"
+
+#: .\Cards\templates\index.html:86
+msgid "Join Course"
+msgstr "Kurs beitreten"
+
+#: .\Cards\templates\index.html:90
+msgid "Choose Course"
+msgstr "Kurs wählen"
+
+#: .\Cards\templates\quiz.html:6
+msgid "Quiz"
+msgstr "Quiz"
+
+#: .\Cards\templates\registration\login.html:8
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+"Benutzername und Passwort stimmen nicht überein. Bitte erneut versuchen."
+
+#: .\Cards\templates\settings.html:8
+msgid "Setting"
+msgstr "Einstellungen"
+
+#: .\Cards\templates\settings.html:16
+msgid "Your Courses"
+msgstr "Deine Kurse"
+
+#: .\Cards\templates\settings.html:20
+msgid "Language"
+msgstr "Sprache"
+
+#: .\Cards\templates\stats.html:16
+msgid "Global Stats"
+msgstr "Globale Statistiken"
+
+#: .\Cards\templates\stats.html:21
+msgid "Questions played"
+msgstr "Fragen gespielt"
+
+#: .\Cards\templates\stats.html:42
+msgid "Overall Questions"
+msgstr "Fragen insgesamt"
+
+#: .\Cards\templates\stats.html:49
+msgid "Questions per Course"
+msgstr "Fragen pro Kurs"
+
+#: .\Cards\templates\stats.html:57
+msgid "Personal"
+msgstr "Persöhnlich"
+
+#: .\Cards\templates\stats.html:83
+msgid "Last (max) 7 Days"
+msgstr "Letze (max) 7 Tage"
+
+#: .\Cards\templates\stats.html:85
+msgid "Questions per Day"
+msgstr "Fragen pro Tag"
+
+#: .\Cards\templates\test.html:7
+msgid "Test"
+msgstr "Test"
+
+#: .\Cards\templates\test_overview.html:8
+#: .\Cards\templates\test_overview.html:12
+msgid "Test Overview"
+msgstr "Test Übersicht"
+
+#: .\Cards\templates\test_overview.html:13
+msgid ""
+"\n"
+"        In a Test each question from a course is asked in random order "
+"once.\n"
+"    "
+msgstr ""
+"\n"
+"        Bei einem Test wird jede Frage eines Quizzes in zufälliger "
+"Reihenfolge einmal gestellt.\n"
+"    "
+
+#: .\Cards\templates\test_overview.html:19
+msgid "Start new Test"
+msgstr "Starte neuen Test"
+
+#: .\Cards\templates\test_overview.html:23
+msgid "Start Test"
+msgstr "Starte Test"
+
+#: .\Cards\templates\test_overview.html:29
+msgid "Your Tests"
+msgstr "Deine Tests"
+
+#: .\Cards\templates\test_overview.html:34
+msgid ""
+"\n"
+"                You have not started any test yet!\n"
+"            "
+msgstr ""
+"\n"
+"                Du hast bisher keine Tests!\n"
+"            "
+
+#: .\Cards\templates\test_overview.html:48
+msgid "You need to select a course to start a test!"
+msgstr "Du musst einen Kurs auswählen um einen Test zu starten!"
+
+#: .\Cards\templates\test_stats.html:12 .\Cards\templates\test_stats.html:16
+msgid "Test Review"
+msgstr "Test Bewertung"
+
+#: .\Cards\templates\test_stats.html:42 .\Cards\templates\test_stats.html:68
+msgid "Successfull Questions"
+msgstr "Erfolgreiche Fragen"
+
+#: .\Cards\views\edit.py:22
+msgid "You cannot edit this question!"
+msgstr "Du kannst diese Frage nicht bearbeiten!"
+
+#: .\Cards\views\edit.py:45
+msgid "You cannot edit this comment!"
+msgstr "Du kannst diesen Kommentar nicht bearbeiten!"
+
+#: .\Cards\views\edit.py:68
+msgid "You cannot edit this course!"
+msgstr "Du kannst diesen Kurs nicht bearbeiten!"
+
+#: .\Cards\views\new.py:24
+msgid "Question saved! You can view it here <a href={}>here</a>"
+msgstr "Frage gespeichert! Du kannst sie<a href={}>hier</a> ansehen"
+
+#: .\Cards\views\questions.py:30
+msgid "The requested question could not be found!"
+msgstr "Die Frage konnte nicht gefunden werden!"
+
+#: .\Cards\views\questions.py:34
+msgid "There are no questions in this course/chapter yet!"
+msgstr "Es gibt bisher keine Fragen in diesem Kapitel/Kurs!"
+
+#: .\Cards\views\questions.py:98
+msgid "There was an error saving your comment!"
+msgstr "Es gab einen Fehler beim speichern deines Kommentars!"
+
+#: .\Cards\views\tests.py:99
+msgid "There was an error finding the selected course!"
+msgstr "Es gab einen Fehler beim finden des ausgewählten Kurses!"
