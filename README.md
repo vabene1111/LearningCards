@@ -1,5 +1,5 @@
 A simple django based application to create, share and play online quizzes.
-Everything is based on self control (like learning cards) and is not meant as a actual quiz/test platform.
+Everything is based on self control (like flashcards) and is not meant as a actual quiz/test platform.
 
 **Features**
 - Create Questions in different courses, chapters and organizations
@@ -17,6 +17,7 @@ thus the focus was on features and not on code style or maintainability.
 Everything, including this readme, is rather "quick and dirty" but it works.
 
 ## Install
+After installing the admin can create registration keys trough djangos admin interface.
 
 ### Docker-Compose
 When cloning this repository, a simple docker-compose file is included. It is made for setups already running an nginx-reverse proxy network with let’s encrypt companion but can be changed easily. Copy `.env.template` to `.env` and fill in the missing values accordingly.  

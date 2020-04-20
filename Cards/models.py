@@ -107,3 +107,6 @@ class RegistrationKey(models.Model):
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     signup_key = models.ForeignKey(RegistrationKey, on_delete=models.PROTECT,  null=True)
+
+    def __str__(self):
+        return str(self.user)

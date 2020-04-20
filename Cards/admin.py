@@ -39,6 +39,18 @@ class CommentAdmin(admin.ModelAdmin):
         return obj.question.id
 
 
+class RegistrationKeyAdmin(admin.ModelAdmin):
+    list_display = ('key', 'info', 'valid_until')
+
+
+class UserInfoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'signup_key')
+
+    @staticmethod
+    def name(obj):
+        return obj.user.first_name + ' ' + obj.user.last_name
+
+
 admin.site.register(University)
 admin.site.register(Course)
 admin.site.register(Question)
@@ -47,5 +59,5 @@ admin.site.register(QuestionCache)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Test, TestAdmin)
 admin.site.register(TestQuestion, TestQuestionAdmin)
-admin.site.register(RegistrationKey)
-admin.site.register(UserInfo)
+admin.site.register(RegistrationKey, RegistrationKeyAdmin)
+admin.site.register(UserInfo, UserInfoAdmin)
