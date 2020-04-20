@@ -124,7 +124,7 @@ def stats(request):
         global_stats['number_questions_success_percent'] = 100
         global_stats['number_questions_failure_percent'] = 100
 
-    course_form = SelectCourseForm()
+    course_form = SelectCourseForm(request.user)
 
     return render(request, "stats.html",
                   {'user_stats': user_stats, 'global_stats': global_stats, 'course_form': course_form})

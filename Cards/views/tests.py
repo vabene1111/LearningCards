@@ -73,7 +73,7 @@ def test_overview(request):
     table = TestTable(Test.objects.filter(user=request.user).order_by('-created_at').all())
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
-    course_form = SelectCourseForm()
+    course_form = SelectCourseForm(request.user)
 
     return render(request, "test_overview.html", {'tests': table, 'course_form': course_form})
 

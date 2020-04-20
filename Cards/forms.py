@@ -34,8 +34,13 @@ class ChapterForm(forms.ModelForm):
 
 
 class SelectCourseForm(forms.Form):
-    course = forms.ModelChoiceField(
-        queryset=Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).all())
+    course = forms.ModelChoiceField(queryset=Course.objects.all())
+
+    def __init__(self, user, *args, **kwargs):
+        super(SelectCourseForm, self).__init__(*args, **kwargs)
+        self.fields['course'] = forms.ModelChoiceField(
+            queryset=Course.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0, users=user).all()
+        )
 
 
 class QuestionForm(forms.ModelForm):

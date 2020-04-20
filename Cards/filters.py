@@ -1,6 +1,6 @@
 import django_filters
 
-from Cards.models import Question, Course
+from Cards.models import Question, Course, Chapter
 
 
 class QuestionFilter(django_filters.FilterSet):
@@ -18,3 +18,11 @@ class CourseFilter(django_filters.FilterSet):
     class Meta:
         model = Course
         fields = ['name', 'university', 'semester']
+
+
+class ChapterFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Chapter
+        fields = ['name', 'course']
