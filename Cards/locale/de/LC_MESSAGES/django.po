@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-20 16:23+0200\n"
-"PO-Revision-Date: 2020-04-20 16:24+0200\n"
+"POT-Creation-Date: 2020-04-20 17:24+0200\n"
+"PO-Revision-Date: 2020-04-20 17:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -33,6 +33,18 @@ msgstr ""
 #: .\Cards\forms.py:78
 msgid "Add your comment: "
 msgstr "Füge einen Kommentar hinzu: "
+
+#: .\Cards\forms.py:86
+msgid "Registration Key"
+msgstr "Registrierungs Schlüssel"
+
+#: .\Cards\forms.py:86
+msgid ""
+"You need a registration key in order to signup. You can get a key from the "
+"page Administrator."
+msgstr ""
+"Du benötigst einen Registrierungs Schlüssel um einen Account zu erstellen. "
+"Du kannst ihn von einem Administrator erhalten."
 
 #: .\Cards\helper\course_helper.py:21 .\Cards\templates\course.html:74
 msgid "No Chapter"
@@ -476,3 +488,15 @@ msgstr "Es gab einen Fehler beim speichern deines Kommentars!"
 #: .\Cards\views\tests.py:99
 msgid "There was an error finding the selected course!"
 msgstr "Es gab einen Fehler beim finden des ausgewählten Kurses!"
+
+#: .\Cards\views\views.py:145
+msgid "The registration key you provided is invalid!"
+msgstr "Der Registrierungsschlüssel ist ungültig!"
+
+#: .\Cards\views\views.py:154
+msgid ""
+"Welcome! Your progress will now be saved and you are able to view "
+"statistics, join courses and use tests."
+msgstr ""
+"Willkommen! Dein Fortschritt wird nun gespeichert und du kannst dir "
+"Statistiken anschauen, Kursen beitreten und Tests nutzen."
