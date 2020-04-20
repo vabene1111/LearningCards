@@ -3,6 +3,8 @@ import markdown as md
 import bleach
 from bleach_whitelist import markdown_tags, markdown_attrs
 
+from Cards.helper.mdx_extension import MarkdownFormatExtension
+
 register = template.Library()
 
 
@@ -14,4 +16,6 @@ def get_class(value):
 @register.filter()
 def markdown(value):
     tags = markdown_tags + ['pre', 'table', 'td', 'tr', 'th', 'tbody', 'style', 'thead']
-    return bleach.clean(md.markdown(value, extensions=['markdown.extensions.fenced_code', 'tables']), tags, markdown_attrs)
+    parsed_md = md.markdown(value, extensions=['markdown.extensions.fenced_code', 'tables', MarkdownFormatExtension()])
+    return bleach.clean(parsed_md, tags, markdown_attrs)
+
