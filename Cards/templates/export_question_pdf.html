@@ -24,11 +24,10 @@
     {{ course.description | markdown | safe }}
 {% endif %}
 
-<br/>
-<br/>
+<hr>
 
 {% for key, value in chapters.items %}
-    <h2>{{ value.name }}</h2>
+    <h1><u>{{ value.name }}</u></h1>
     {% for q in  value.questions %}
         <h3>{{ q.question }}</h3>
         {{ q.answer |markdown|safe }}
