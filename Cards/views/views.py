@@ -16,7 +16,7 @@ def index(request):
         num_questions__gt=0).order_by('name').all()
 
     if request.user.is_authenticated:
-        courses.filter(users=request.user)
+        courses = courses.filter(users=request.user)
 
     chapters = Chapter.objects.annotate(num_questions=Count('question')).filter(num_questions__gt=0).order_by(
         'name').all()

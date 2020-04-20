@@ -48,10 +48,9 @@
 
         <div class="col">
             <h2>{% trans 'Quizzes' %}</h2>
-            {% if request.user.is_authenticaed %}
+            {% if request.user.is_authenticated %}
                 <ul class="list-group list-group-flush">
                     {% for c in courses %}
-
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col col-11">
