@@ -30,23 +30,26 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('new_question')
 
-    def get_context_data(self, **kwargs):
-        context = super(QuestionCreate, self).get_context_data(**kwargs)
-        context['title'] = _("Question")
+    def get_initial(self):
+        initials = {}
 
-        context['default_course'] = -1
         course = self.request.GET.get('course')
         if course:
             if re.match(r'^([0-9])+$', course):
                 if Course.objects.filter(pk=int(course)).exists():
-                    context['default_course'] = int(course)
+                    initials['course'] = int(course)
 
-        context['default_chapter'] = -1
         chapter = self.request.GET.get('chapter')
         if chapter:
             if re.match(r'^([0-9])+$', chapter):
                 if Chapter.objects.filter(pk=int(chapter)).exists():
-                    context['default_chapter'] = int(chapter)
+                    initials['chapter'] = int(chapter)
+
+        return initials
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionCreate, self).get_context_data(**kwargs)
+        context['title'] = _("Question")
 
         return context
 

@@ -44,7 +44,7 @@ class SelectCourseForm(forms.Form):
 
 
 class QuestionForm(forms.ModelForm):
-    chapter = forms.ModelChoiceField(Chapter.objects.order_by('course', 'name'), required=False)
+    chapter = forms.ModelChoiceField(Chapter.objects.order_by('course', 'name'), required=False, widget=SelectWidget)
 
     def clean(self):
         form_data = self.cleaned_data
@@ -61,6 +61,9 @@ class QuestionForm(forms.ModelForm):
         help_texts = {
             'question': _(
                 'Question and answer both support <a href="https://daringfireball.net/projects/markdown/syntax" target="_blank">markdown</a> for formatting. ')
+        }
+        widgets = {
+            'course': SelectWidget
         }
 
 

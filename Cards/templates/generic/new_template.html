@@ -21,20 +21,3 @@
 
 {% endblock %}
 
-{% block script %}
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            let course = {{ default_course }};
-            if (course !== -1) {
-                $('#id_course').val(course)
-            }
-
-            let chapter = {{ default_chapter }};
-            if (chapter !== -1) {
-                $('#id_chapter').val(chapter)
-            }
-        });
-    </script>
-
-{% endblock %}
