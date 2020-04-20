@@ -53,7 +53,7 @@ def course(request, pk):
                 request.session['courses'].remove(course)
 
     if request.user.is_authenticated:
-        log = QuestionLog.objects.filter(user=request.user, question__course__pk=course.pk).values(
+        log = QuestionLog.objects.filter(user=request.user, question__course=course).values(
             'question__chapter__name').annotate(count_total=Count('id'),
                                                 count_success=Count('id', filter=Q(type=QuestionLog.SUCCESS)),
                                                 count_failure=Count('id', filter=Q(type=QuestionLog.FAIL)))
@@ -64,7 +64,7 @@ def course(request, pk):
             response['data_success'].append(round(e['count_success'] * percent_per_question))
             response['data_failure'].append(round(e['count_failure'] * percent_per_question))
     else:
-        response = {'labels': [], 'data_success': [], 'data_failure': []}
+        response = None
 
     chapters = course_helper.get_chapters(course)
     if request.user.is_authenticated:
