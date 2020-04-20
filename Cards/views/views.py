@@ -1,7 +1,13 @@
+from datetime import datetime
+
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 from django_tables2 import RequestConfig
 
 from Cards.forms import RegisterForm, SelectCourseForm, CourseSearchForm
@@ -134,13 +140,19 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
+
+            if not RegistrationKey.objects.filter(key=form.cleaned_data['key'], valid_until__gt=datetime.now()).exists():
+                form.add_error('key', _('The registration key you provided is invalid!'))
+                return render(request, "registration/signup.html", {"form": form})
+
             form.save()
             new_user = authenticate(username=form.cleaned_data['username'],
                                     password=form.cleaned_data['password1'],
                                     )
             login(request, new_user)
 
-        return redirect("index")
+            messages.add_message(request, messages.SUCCESS, _('Welcome! Your progress will now be saved and you are able to view statistics, join courses and use tests.'))
+            return HttpResponseRedirect(reverse_lazy('index'))
     else:
         form = RegisterForm()
 

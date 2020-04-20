@@ -83,9 +83,10 @@ class CommentForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
+    key = forms.CharField(label=_('Registration Key'), help_text=_('You need a registration key in order to signup. You can get a key from the page Administrator.'), required=True)
+
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
-        # Making location required
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
 

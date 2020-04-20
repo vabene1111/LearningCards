@@ -93,3 +93,17 @@ class Comment(models.Model):
 
     def __str__(self):
         return str(self.created_by) + ' - ' + str(self.text)
+
+
+class RegistrationKey(models.Model):
+    key = models.CharField(max_length=32)
+    info = models.TextField()
+    valid_until = models.DateTimeField()
+
+    def __str__(self):
+        return f'Key: {self.key} -- Info: {self.info}'
+
+
+class UserInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    signup_key = models.ForeignKey(RegistrationKey, on_delete=models.PROTECT,  null=True)
