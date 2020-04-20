@@ -6,6 +6,10 @@
 
 {% block title %}{% trans 'List' %} - {{ title }}{% endblock %}
 
+{% block extra_head %}
+    {{ filter.form.media }}
+{% endblock %}
+
 {% block content %}
 
     <h3>{{ title }} {% trans 'List' %}
