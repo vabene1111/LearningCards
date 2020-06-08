@@ -10,7 +10,7 @@ ADD . /LearningCards/
 RUN apk update
 RUN apk upgrade
 RUN apk add --no-cache postgresql-libs gettext
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev zlib-dev postgresql-dev && \
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev zlib-dev postgresql-dev jpeg-dev && \
     pip install --upgrade pip &&  \
     pip install -r requirements.txt && \
     apk --purge del .build-deps
