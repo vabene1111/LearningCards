@@ -471,7 +471,7 @@ msgstr "Du kannst diesen Kurs nicht bearbeiten!"
 
 #: .\Cards\views\new.py:24
 msgid "Question saved! You can view it here <a href={}>here</a>"
-msgstr "Frage gespeichert! Du kannst sie<a href={}>hier</a> ansehen"
+msgstr "Frage gespeichert! Du kannst sie <a href={}>hier</a> ansehen"
 
 #: .\Cards\views\questions.py:30
 msgid "The requested question could not be found!"
