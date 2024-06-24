@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'django_filters',
     'crispy_forms',
+    'crispy_bootstrap4',
     'Cards.apps.CardsConfig',
 ]
 
