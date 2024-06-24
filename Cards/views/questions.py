@@ -60,8 +60,7 @@ def quiz(request, pk, q=None, c=None):
 
 def quiz_success(request, pk, c=None):
     question = Question.objects.get(pk=pk)
-    if request.user.is_authenticated:
-        finish_question(request.user, question, QuestionLog.SUCCESS)
+    finish_question(request.user, question, QuestionLog.SUCCESS)
 
     if c:
         return HttpResponseRedirect(reverse('quiz_chapter', args=[question.course.pk, c]))
@@ -71,8 +70,7 @@ def quiz_success(request, pk, c=None):
 
 def quiz_fail(request, pk, c=None):
     question = Question.objects.get(pk=pk)
-    if request.user.is_authenticated:
-        finish_question(request.user, question, QuestionLog.FAIL)
+    finish_question(request.user, question, QuestionLog.FAIL)
 
     if c:
         return HttpResponseRedirect(reverse('quiz_chapter', args=[question.course.pk, c]))

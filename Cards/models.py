@@ -48,7 +48,7 @@ class QuestionLog(models.Model):
     FAIL = 'FAIL'
     STATUS_TYPES = ((SUCCESS, _('Success')), (FAIL, _('Fail')))
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     type = models.CharField(choices=STATUS_TYPES, max_length=128, default=SUCCESS)
     created_at = models.DateTimeField(auto_now_add=True)

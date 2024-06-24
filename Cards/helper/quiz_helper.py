@@ -116,9 +116,10 @@ def get_next_question(request, course_id, chapter=None):
 
 
 def finish_question(user, question, type):
-    remove_cache_entry(user, question)
     log = QuestionLog()
-    log.user = user
+    if user.is_authenticated:
+        remove_cache_entry(user, question)
+        log.user = user
     log.question = question
     log.type = type
     log.save()
