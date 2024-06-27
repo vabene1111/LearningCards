@@ -121,6 +121,8 @@ def stats(request):
     global_stats['number_questions_played'] = QuestionLog.objects.count()
     global_stats['number_questions_success'] = QuestionLog.objects.filter(type=QuestionLog.SUCCESS).count()
     global_stats['number_questions_failure'] = QuestionLog.objects.filter(type=QuestionLog.FAIL).count()
+    global_stats['number_questions_success_anonymous'] = QuestionLog.objects.filter(type=QuestionLog.SUCCESS, user__isnull=True).count()
+    global_stats['number_questions_failure_anonymous'] = QuestionLog.objects.filter(type=QuestionLog.FAIL, user__isnull=True).count()
     if global_stats['number_questions_played'] > 0 and global_stats['number_questions_played'] > 0:
         global_stats['number_questions_success_percent'] = 100 / global_stats['number_questions_played'] * global_stats[
             'number_questions_success']

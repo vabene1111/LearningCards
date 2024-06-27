@@ -25,12 +25,14 @@
                 ({{ global_stats.number_questions_success_percent | floatformat }}%)<small> <i style="color:#509E2F"
                                                                                                class="far fa-thumbs-up"></i></small>
             </h3>
+            <span class="text-muted">{{ global_stats.number_questions_success_anonymous }} Anonym</span>
         </div>
         <div class="col col-md-4">
             <h3>{{ global_stats.number_questions_failure }}
                 ({{ global_stats.number_questions_failure_percent | floatformat }}%)<small> <i style="color:#E61F1C"
                                                                                                class="far fa-thumbs-down"></i></small>
             </h3>
+            <span class="text-muted">{{ global_stats.number_questions_failure_anonymous }} Anonym</span>
         </div>
     </div>
 
@@ -76,6 +78,8 @@
     </div>
 
     <br/>
+
+    <h2><i class="fas fa-chart-line"></i> {% trans 'Course Stats' %}</h2>
 
     <div class="row">
         <div class="col col-md-12">
