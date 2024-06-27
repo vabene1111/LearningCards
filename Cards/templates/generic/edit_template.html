@@ -7,6 +7,11 @@
 
 {% block extra_head %}
     {{ form.media }}
+
+    {% if form.instance|get_class|lower == 'question' %}
+        <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+        <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -31,5 +36,12 @@
 {% endblock %}
 
 {% block script %}
+    <script type="application/javascript">
+        {% if form.instance|get_class|lower == 'question' %}
+            const easyMDE1 = new EasyMDE({element: document.getElementById('id_answer'), maxHeight: "15vh"});
+            const easyMDE2 = new EasyMDE({element: document.getElementById('id_question'), maxHeight: "15vh"});
 
+            $('.editor-toolbar').addClass('bg-light')
+        {% endif %}
+    </script>
 {% endblock %}
