@@ -1,4 +1,4 @@
-django==5.0.6
+django==5.0.7
 django-tables2==2.7.0
 django-filter==24.2
 django-crispy-forms==2.2
