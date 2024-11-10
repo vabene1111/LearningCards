@@ -44,7 +44,7 @@ def course(request, pk):
             else:
                 if 'courses' not in request.session:
                     request.session['courses'] = []
-                request.session['courses'].add(course)
+                request.session['courses'].append(course)
         elif request.POST['type'] == "leave":
             if request.user.is_authenticated:
                 course.users.remove(request.user)
@@ -75,7 +75,7 @@ def course(request, pk):
     else:
         if 'courses' not in request.session:
             request.session['courses'] = []
-        if course in request.session['course']:
+        if course in request.session['courses']:
             assigned = True
         else:
             assigned = False
