@@ -100,6 +100,10 @@ def settings(request):
     return render(request, 'settings.html', {'form': form, 'table': table})
 
 
+def help_view(request):
+    return render(request, 'help.html', {})
+
+
 @login_required
 def stats(request):
     user_stats = {}

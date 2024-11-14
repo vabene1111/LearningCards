@@ -11,11 +11,17 @@ class Institution(models.Model):
 
 
 class Course(models.Model):
+    V_PUBLIC = 'PUBLIC'
+    V_NON_PUBLIC = 'V_NON_PUBLIC'
+
     name = models.CharField(max_length=128)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     users = models.ManyToManyField(User, related_name='course_users')
+
+    course_password = models.CharField(max_length=128, default='', blank=True)
+    visibility = models.CharField(max_length=128, choices=((V_PUBLIC, _('Public')), (V_NON_PUBLIC, _('Not Public'))), default=V_PUBLIC)
 
     def __str__(self):
         return self.name
@@ -105,7 +111,7 @@ class RegistrationKey(models.Model):
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    signup_key = models.ForeignKey(RegistrationKey, on_delete=models.PROTECT,  null=True)
+    signup_key = models.ForeignKey(RegistrationKey, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return str(self.user)

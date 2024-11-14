@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load l10n %}
+
+{% block title %}{% trans 'Help' %}{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block content %}
+    <h2>Konzept</h2>
+    Die Seite funktioniert nach dem klassischen Prinzip des lernens mit <a href="https://de.wikipedia.org/wiki/Lernkartei" target="_blank">Karteikarten</a>.
+
+    <h2>Lernen</h2>
+    Zum Lernen muss zunächst ein Kurs ausgewählt werden. Hierzu unter "Kurs Daten" > "Kurse" einen Kurs auswählen. Anschließend dem Kurs beitreten und beginnen die Fragen zu "Spielen". <br/><br/>
+
+    Fragen werden zunächst in zufälliger Reihenfolge angezeigt. Nach dem Lesen der Frage muss diese (im Kopf) beantwortet werden. Anschließen kann man sich die Antwort anzeigen lassen. <br/><br/>
+    Durch Drücken von Daumen hoch oder Daumen runter wird festgehalten, ob die Frage richtig oder falsch beantwortet wurde.
+    Nutzer <u>mit</u> Account können hierdurch Statistiken erzeugen. Außerdem werden falsch beantwortete Fragen häufiger wieder angezeigt als richtig beantwortete Fragen.
+
+    <h2>Kurse</h2>
+    Ein Kurs ist ein Thema, zu dem man etwas lernen möchte. Alle Fragen sind immer einem Kurs zugeordnet.<br/>
+    Außerdem steuern Kurse wer Fragen sehen/bearbeiten/erstellen kann und erlauben es Statistiken zum Kurs anzusehen.
+
+    <h2>Fragen (Karteikarten)</h2>
+    Jeder angemeldete Nutzer kann Fragen für einen Kurs erfassen, sofern dies vom Kursinhaber freigeschaltet ist.<br/><br/>
+
+    Um eine Frage zu erstellen im Menü auf "Neue Frage" klicken und den Kurs sowie, wenn gewünscht, das passende Kapitel auswählen.
+    Anschließend eine Frage Formulieren und passende Antwort hinterlegen.
+    Unter "Quelle" kann eine Internetseite oder sonstige Quellenangabe (z.B. "Skript Seite 10") angegeben werden.
+
+    <h2>Kapitel</h2>
+    Kapitel erlauben es bei umfangreichen Kursen gezielt Fragen zu suchen oder auch nur Fragen eines bestimmten Kapitels zu lernen.<br/>
+
+    Hierzu wählt man unter "Kurs Daten" > "Kurse" den Kurs anklicken und dort bei den einzelnen Kapiteln auf "Spielen" drücken.
+
+    <h2>Tests</h2>
+    Mithilfe von Tests können alle Fragen eines Kurses ein mal gespielt werden. Am Ende sieht man wie viele Fragen des Kurses man richtig beantwortet hat und kann so überprüfen,
+    wie gut die Kursthemen verstanden wurden.
+
+{% endblock %}
