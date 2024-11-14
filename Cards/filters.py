@@ -1,7 +1,7 @@
 import django_filters
 
 from Cards.forms import SelectWidget
-from Cards.models import Question, Course, Chapter, University
+from Cards.models import Question, Course, Chapter, Institution
 
 
 class QuestionFilter(django_filters.FilterSet):
@@ -16,12 +16,11 @@ class QuestionFilter(django_filters.FilterSet):
 
 class CourseFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
-    semester = django_filters.CharFilter(lookup_expr='icontains')
-    university = django_filters.ModelChoiceFilter(widget=SelectWidget, queryset=University.objects.all())
+    institution = django_filters.ModelChoiceFilter(widget=SelectWidget, queryset=Institution.objects.all())
 
     class Meta:
         model = Course
-        fields = ['name', 'university', 'semester']
+        fields = ['name', 'institution']
 
 
 class ChapterFilter(django_filters.FilterSet):

@@ -20,7 +20,7 @@ class MultiSelectWidget(widgets.SelectMultiple):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ('name', 'university', 'semester', 'description')
+        fields = ('name', 'institution', 'description')
 
 
 class CourseSearchForm(forms.Form):

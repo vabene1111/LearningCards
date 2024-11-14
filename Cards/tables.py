@@ -23,7 +23,7 @@ class CourseTable(tables.Table):
     class Meta:
         model = Course
         template_name = 'generic/table_template.html'
-        fields = ('id', 'name', 'university', 'semester')
+        fields = ('id', 'name', 'institution')
 
 
 class ChapterTable(tables.Table):

@@ -51,7 +51,7 @@ class UserInfoAdmin(admin.ModelAdmin):
         return obj.user.first_name + ' ' + obj.user.last_name
 
 
-admin.site.register(University)
+admin.site.register(Institution)
 admin.site.register(Course)
 admin.site.register(Question)
 admin.site.register(QuestionLog, QuestionLogAdmin)

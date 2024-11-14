@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 
 
-class University(models.Model):
+class Institution(models.Model):
     name = models.CharField(max_length=128)
 
     def __str__(self):
@@ -12,8 +12,7 @@ class University(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=128)
-    university = models.ForeignKey(University, on_delete=models.CASCADE, blank=True, null=True)
-    semester = models.CharField(max_length=128, blank=True, null=True)
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
     users = models.ManyToManyField(User, related_name='course_users')
